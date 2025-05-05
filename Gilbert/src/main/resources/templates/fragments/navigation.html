@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="da">
+<body>
+<nav th:fragment="navigation" class="app-navigation">
+    <a class="home" href="/">
+        <img src="/images/icons/home.svg" th:alt="#{navigation.homeAlt}">
+    </a>
+    <a class="search" href="/search">
+        <img src="/images/icons/search.svg" th:alt="#{navigation.searchAlt}">
+    </a>
+    <a class="favorites" href="/me/favorites">
+        <img src="/images/icons/favorites.svg" th:alt="#{navigation.favoritesAlt}">
+    </a>
+    <a class="profile" href="/me">
+        <img src="/images/icons/profile.svg" th:alt="#{navigation.profileAlt}">
+    </a>
+    <a class="notifications" href="/me/notifications">
+        <img src="/images/icons/bell.svg" th:alt="#{navigation.notificationsAlt}">
+    </a>
+</nav>
+</body>
+</html>

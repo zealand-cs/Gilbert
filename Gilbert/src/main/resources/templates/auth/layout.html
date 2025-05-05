@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
+<head>
+    <title th:text="#{auth.login.title}"></title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="auth-body">
+        <div class="auth-container">
+            <section layout:fragment="auth-content"></section>
+        </div>
+    </div>
+</section>
+</body>
+</html>

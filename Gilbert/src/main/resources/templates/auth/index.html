@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/auth/layout}">
+<head>
+    <title th:text="#{auth.title}"></title>
+</head>
+<body>
+<section layout:fragment="auth-content">
+    <h1 th:text="#{auth.header}"></h1>
+    <form method="get" th:action="@{/redirect(redirect=${redirect})}">
+        <label>
+            <span th:text="#{auth.login.emailLabel}"></span>
+            <input type="email" name="email" required>
+        </label>
+        <button type="submit" th:text="#{auth.submit}"></button>
+    </form>
+</section>
+</body>
+</html>

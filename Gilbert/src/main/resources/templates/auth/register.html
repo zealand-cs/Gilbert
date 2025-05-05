@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/auth/layout}">
+<head>
+    <title th:text="#{auth.register.title}"></title>
+</head>
+<body>
+<section layout:fragment="auth-content">
+    <h1 th:text="#{auth.register.header}"></h1>
+    <form method="post" th:action="@{/register(redirect=${redirect})}">
+        <label>
+            <span th:text="#{auth.register.usernameLabel}"></span>
+            <input type="text" name="username" required>
+        </label>
+        <label>
+            <span th:text="#{auth.register.emailLabel}"></span>
+            <input type="email" name="email" th:value="${email}" th:disabled="${email != null}" required>
+        </label>
+        <label>
+            <span th:text="#{auth.register.passwordLabel}"></span>
+            <input type="password" name="password" required>
+        </label>
+        <label>
+            <span th:text="#{auth.register.dateOfBirthLabel}"></span>
+            <input type="date" name="dateOfBirth" required>
+        </label>
+        <button type="submit" th:text="#{auth.register.submitRegistrationLabel}"></button>
+    </form>
+    <p th:text="${error}"></p>
+</section>
+</body>
+</html>

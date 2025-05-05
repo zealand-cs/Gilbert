@@ -1,0 +1,54 @@
+* {
+    --header-height: 60px;
+    --navigation-height: 60px;
+
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.app-header {
+    height: var(--header-height);
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & a {
+        height: 100%;
+    }
+
+    & a img {
+        height: 100%;
+    }
+}
+
+.app-navigation {
+    position: fixed;
+    bottom: 0;
+
+    height: var(--navigation-height);
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    & a {
+        height: 100%;
+        width: 100%;
+
+        padding: 16px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & a img {
+        height: 100%;
+    }
+}
