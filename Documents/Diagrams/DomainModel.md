@@ -2,20 +2,50 @@
 
 ```mermaid
 ---
-title: Domain model
+title: Domain model for Gilbert
 ---
 
 classDiagram
-    class User {
-        name
-        email
-        password
-        role
-    }
+class User {
+    id
+    name
+    email
+    password
+    role
+    followers
+    following
+}
 
-    class Product {
-        seller
-        name
-        brand
-    }
+class SellerPost {
+    id
+    seller_id
+    name
+    brand
+    condition
+    sold
+}
+
+class BuyerOrders {
+    id
+    buyer_id
+
+}
+
+class Notification {
+    type
+    title_label
+    description
+    image_url
+    link_to
+}
+
+class Follower {
+    id
+    name
+}
+
+class Favorite {
+    post_id
+    added_time
+}
 ```
