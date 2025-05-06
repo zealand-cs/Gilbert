@@ -119,7 +119,7 @@ Users need to be seperated into different roles to seperate from regular members
 Users are now assigned different roles with different permission access to the system
 
 
-# USECASE - See/Add/Remove favorites
+# USECASE - Add favorites
 
 ##### Precondition:
 
@@ -179,4 +179,3 @@ The user should be able to sort and search for different items, whether its type
 ###### Postcondition:
 
 The user can now sort and search for the different needs they have.
-
