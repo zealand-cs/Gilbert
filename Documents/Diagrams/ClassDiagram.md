@@ -16,7 +16,7 @@ class User {
     - String Password
     - UserRole role
     - Integer numberOfSales
-    + User(Integer id, String name, String displayName, String userName, String email, String password, UserRole role)
+    + User(Integer id, String name, String displayName, String userName, String email, String password, UserRole role, Integer numberOfSales)
     + Integer getId()
     + void setId(Integer Id)
     + String getName()
@@ -31,6 +31,8 @@ class User {
     + void setPassword(String Password)
     + UserRole getRole()
     + void setRole(UserRole role)   
+    + Integer getNumberOfSales()
+    + void setNumberOfSales(Integer numberOfSales)
     
 }
 
@@ -47,7 +49,8 @@ class Post {
     - String location
     - PostStatus status
     - String ImageId
-    + ClothingItem(Integer Id, Integer ownerId, String name, String brand, String typeOfClothing, String description, double price, String condition, String size, String location, PostStatus status Image image)
+    - LocalDate datePostedAt
+    + ClothingItem(Integer Id, Integer ownerId, String name, String brand, String typeOfClothing, String description, double price, String condition, String size, String location, PostStatus status, Image image, LocalDate dateOfPost)
     + Integer getId()
     + void setId(Integer Id)
     + Integer getownerId()
@@ -72,6 +75,8 @@ class Post {
     + void setStatus(PostStatus status)
     + Image getImage()
     + void setImage(Image Image)    
+    + LocalDate getDateOfPost()
+    + void setDateOfPost(LocalDate dateOfPost)
 }
 
 class UserRepository {
