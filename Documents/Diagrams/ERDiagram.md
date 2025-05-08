@@ -71,12 +71,12 @@ tags {
     string tag_type
 }
 
-BRAND {
+BRANDS {
     int id PK
     string name
 }
 
-CLOTHING_TYPE {
+CLOTHING_TYPES {
     int id PK
     string name
 }
