@@ -1,7 +1,8 @@
 package dk.zealandcs.gilbert.application.post;
 
-import dk.zealandcs.gilbert.domain.User;
+
 import dk.zealandcs.gilbert.domain.post.Post;
+import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.infrastruture.post.IPostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package dk.zealandcs.gilbert.application.post;
 
-import dk.zealandcs.gilbert.domain.User;
+import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.post.Post;
 
 import java.util.List;
