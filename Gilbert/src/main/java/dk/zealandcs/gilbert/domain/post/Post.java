@@ -19,6 +19,9 @@ public class Post {
     private String imageId;
     private LocalDate datePostedAt;
 
+    public Post() {
+    }
+
     public Post(int id, int ownerId, String name, String brand, String typeOfClothing, String description, double price, Condition condition, String size, String location, PostStatus status, String imageId, LocalDate datePostedAt) {
         this.id = id;
         this.ownerId = ownerId;

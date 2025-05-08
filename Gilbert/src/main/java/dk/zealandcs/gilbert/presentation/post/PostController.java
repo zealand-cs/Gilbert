@@ -1,9 +1,16 @@
 package dk.zealandcs.gilbert.presentation.post;
 
+import dk.zealandcs.gilbert.application.post.IPostService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final IPostService postService;
+
+    PostController(IPostService postService) { this.postService = postService; }
 }
