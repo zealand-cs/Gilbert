@@ -35,15 +35,22 @@ class User {
 
 class Post {
     - Integer Id
+    - Integer ownerId
     - String Name
     - String Brand
     - String TypeOfClothing
     - String Description
     - double Price
+    - String condition
+    - String size
+    - String location
+    - PostStatus status
     - Image Image
-    + ClothingItem(Integer Id, String name, String brand, String typeOfClothing, String description, double price, Image image)
+    + ClothingItem(Integer Id, Integer ownerId, String name, String brand, String typeOfClothing, String description, double price, String condition, String size, String location, PostStatus status Image image)
     + Integer getId()
     + void setId(Integer Id)
+    + Integer getownerId()
+    + void setownerId(Integer ownerId)
     + String getName()
     + void setName(String Name)
     + String getBrand()
@@ -54,6 +61,14 @@ class Post {
     + void setDescription(String Description)
     + double getPrice()
     + void setPrice(Double Price)
+    + String getCondition()
+    + void setCondition(String condition)
+    + String getSize()
+    + void setSize(String size)
+    + String getLocation()
+    + void setLocation(String location)
+    + PostStatus getStatus()
+    + void setStatus(PostStatus status)
     + Image getImage()
     + void setImage(Image Image)    
 }
@@ -143,6 +158,13 @@ class UserRole {
     - Integer rank
     + Role(Integer rank)
     + bool isAtleast(UseRole role)
+}
+
+class PostStatus {
+    <<enumeration>>
+    + Available
+    + Reserved
+    + Sold
 }
 
 
