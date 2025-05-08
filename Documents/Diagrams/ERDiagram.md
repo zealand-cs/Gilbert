@@ -25,13 +25,18 @@ user_connections {
 
 posts {
     int id PK
-    int seller_id FK
-    string title
-    int brand_tag_id
-    int product_type_tag_id
-    string condition_id
-    boolean sold
-    datetime created_at
+    int owner_id FK
+    string name
+    string description
+    double price
+    string condition
+    string size
+    string location
+    string status
+    string image_id
+    int brands_id FK
+    int product_type_id FK
+    LocalDate date_posted_at
 }
 
 orders {
@@ -66,10 +71,18 @@ tags {
     string tag_type
 }
 
-condition {
+BRAND {
     int id PK
     string name
 }
+
+CLOTHING_TYPE {
+    int id PK
+    string name
+}
+        
+
+
 
 users }o--o{ posts : "favorites"
 users ||--o{ user_connections : "has"
