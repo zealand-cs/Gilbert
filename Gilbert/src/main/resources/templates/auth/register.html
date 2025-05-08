@@ -8,20 +8,16 @@
     <h1 th:text="#{auth.register.header}"></h1>
     <form method="post" th:action="@{/register(redirect=${redirect})}">
         <label>
-            <span th:text="#{auth.register.usernameLabel}"></span>
-            <input type="text" name="username" required>
+            <input th:placeholder="#{auth.register.displayNameLabel}" type="text" name="display_name" required>
+            <span th:text="#{auth.register.displayNameDescription}"></span>
         </label>
         <label>
-            <span th:text="#{auth.register.emailLabel}"></span>
-            <input type="email" name="email" th:value="${email}" th:disabled="${email != null}" required>
+            <input th:placeholder="#{auth.register.emailLabel}" type="email" name="email" th:value="${email}" required>
+            <span th:text="#{auth.register.emailDescription}"></span>
         </label>
         <label>
-            <span th:text="#{auth.register.passwordLabel}"></span>
-            <input type="password" name="password" required>
-        </label>
-        <label>
-            <span th:text="#{auth.register.dateOfBirthLabel}"></span>
-            <input type="date" name="dateOfBirth" required>
+            <input th:placeholder="#{auth.register.passwordLabel}" type="password" name="password" required>
+            <span th:text="#{auth.register.passwordDescription}"></span>
         </label>
         <button type="submit" th:text="#{auth.register.submitRegistrationLabel}"></button>
     </form>

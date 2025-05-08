@@ -8,12 +8,10 @@
     <h1 th:text="#{auth.login.header}"></h1>
     <form method="post" th:action="@{/login(redirect=${redirect})}">
         <label>
-            <span th:text="#{auth.login.emailLabel}"></span>
-            <input type="email" name="email" th:value="${email}">
+            <input th:placeholder="#{auth.login.emailLabel}" type="email" name="email" th:value="${email}">
         </label>
         <label>
-            <span th:text="#{auth.login.passwordLabel}"></span>
-            <input type="password" name="password">
+            <input th:placeholder="#{auth.login.passwordLabel}" type="password" name="password">
         </label>
         <button type="submit" th:text="#{auth.login.submitLoginLabel}"></button>
     </form>
