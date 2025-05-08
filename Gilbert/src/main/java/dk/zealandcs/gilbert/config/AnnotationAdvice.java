@@ -1,6 +1,6 @@
 package dk.zealandcs.gilbert.config;
 
-import dk.zealandcs.gilbert.domain.User;
+import dk.zealandcs.gilbert.domain.user.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

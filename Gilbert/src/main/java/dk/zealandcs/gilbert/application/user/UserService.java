@@ -1,7 +1,8 @@
 package dk.zealandcs.gilbert.application.user;
 
-import dk.zealandcs.gilbert.domain.User;
-import dk.zealandcs.gilbert.domain.UserRole;
+import dk.zealandcs.gilbert.domain.user.User;
+import dk.zealandcs.gilbert.domain.user.UserRegister;
+import dk.zealandcs.gilbert.domain.user.UserRole;
 import dk.zealandcs.gilbert.infrastruture.user.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +29,20 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public Optional<User> login(String email, String password) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<User> register(User user) {
+    public Optional<User> register(UserRegister user) {
+        if (!user.verify()) {
+
+        }
         return Optional.empty();
     }
 

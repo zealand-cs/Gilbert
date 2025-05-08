@@ -1,6 +1,6 @@
 package dk.zealandcs.gilbert.infrastruture.user;
 
-import dk.zealandcs.gilbert.domain.User;
+import dk.zealandcs.gilbert.domain.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

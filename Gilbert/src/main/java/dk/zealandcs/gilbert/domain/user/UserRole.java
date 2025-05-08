@@ -1,4 +1,4 @@
-package dk.zealandcs.gilbert.domain;
+package dk.zealandcs.gilbert.domain.user;
 
 public enum UserRole {
     User(0),
