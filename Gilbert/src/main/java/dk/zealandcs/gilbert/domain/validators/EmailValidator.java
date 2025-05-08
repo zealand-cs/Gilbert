@@ -10,6 +10,5 @@ public class EmailValidator {
             return true;
         }
         throw new InvalidEmailFormatException("Invalid email format");
-
     }
 }

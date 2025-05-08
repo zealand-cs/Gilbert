@@ -7,22 +7,25 @@
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.register.header}"></h1>
     <form method="post" th:action="${registerUrl}">
-        <label>
-            <input th:placeholder="#{auth.register.displayNameLabel}" type="text" name="displayName" required>
+        <div class="field">
+            <label for="display-name" th:text="#{auth.register.displayNameLabel}"></label>
+            <input id="display-name" th:placeholder="#{auth.register.displayNameLabel}" type="text" name="displayName" required>
             <span th:text="#{auth.register.displayNameDescription}"></span>
-        </label>
-        <label>
-            <input th:placeholder="#{auth.register.emailLabel}" type="email" name="email" th:value="${email}" required>
+        </div>
+        <div class="field">
+            <label for="email" th:text="#{auth.register.emailLabel}"></label>
+            <input id="email" th:placeholder="#{auth.register.emailLabel}" type="email" name="email" th:value="${email}" required>
             <span th:text="#{auth.register.emailDescription}"></span>
-        </label>
-        <label>
-            <input th:placeholder="#{auth.register.passwordLabel}" type="password" name="password" required>
+        </div>
+        <div class="field">
+            <label for="password" th:text="#{auth.register.passwordLabel}"></label>
+            <input id="password" th:placeholder="#{auth.register.passwordLabel}" type="password" name="password" required>
             <span th:text="#{auth.register.passwordDescription}"></span>
-        </label>
-        <label>
-            <input type="checkbox" name="termsAccepted">
-            <span th:text="#{auth.register.termsDescription}"></span>
-        </label>
+        </div>
+        <div class="field horizontal">
+            <input id="terms" type="checkbox" name="termsAccepted">
+            <label for="terms" th:text="#{auth.register.termsDescription}"></label>
+        </div>
         <button type="submit" th:text="#{auth.register.submitRegistrationLabel}"></button>
     </form>
     <p th:text="${error}"></p>

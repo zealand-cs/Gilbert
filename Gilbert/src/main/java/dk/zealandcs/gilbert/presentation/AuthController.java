@@ -3,8 +3,10 @@ package dk.zealandcs.gilbert.presentation;
 import dk.zealandcs.gilbert.application.user.IUserService;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.RegisterUser;
+import dk.zealandcs.gilbert.domain.validators.EmailValidator;
 import dk.zealandcs.gilbert.exceptions.EmailInUseException;
 import dk.zealandcs.gilbert.exceptions.EmailNotFoundException;
+import dk.zealandcs.gilbert.exceptions.InvalidEmailFormatException;
 import dk.zealandcs.gilbert.exceptions.InvalidPasswordException;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -21,7 +23,9 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final IUserService userService;
 
-    AuthController(IUserService userService) { this.userService = userService; }
+    AuthController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String authPage(@RequestParam Optional<String> redirect, Model model) {
@@ -32,6 +36,13 @@ public class AuthController {
 
     @PostMapping("/entry")
     public String authPageRedirect(@RequestParam String email, @RequestParam Optional<String> redirect, Model model) {
+        try {
+            EmailValidator.isValid(email);
+        } catch (InvalidEmailFormatException e) {
+            model.addAttribute("emailError", true);
+            return "auth/index";
+        }
+
         logger.info("Getting user by email: {}", email);
         var user = userService.getUserByEmail(email);
 
@@ -42,8 +53,7 @@ public class AuthController {
         if (user.isEmpty()) {
             model.addAttribute("registerUrl", "/auth/register" + redirectParam);
             return "auth/register";
-        }
-        else {
+        } else {
             model.addAttribute("loginUrl", "/auth/login" + redirectParam);
             return "auth/login";
         }
