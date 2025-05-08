@@ -8,7 +8,8 @@ title: Domain model for Gilbert
 classDiagram
 class User {
     id
-    name
+    display_name
+    username
     email
     password
     role
@@ -42,6 +43,7 @@ class Notification {
 class Follower {
     id
     name
+    since
 }
 
 class Favorite {
