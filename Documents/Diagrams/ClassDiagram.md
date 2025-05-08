@@ -15,6 +15,7 @@ class User {
     - String Email
     - String Password
     - UserRole role
+    - Integer numberOfSales
     + User(Integer id, String name, String displayName, String userName, String email, String password, UserRole role)
     + Integer getId()
     + void setId(Integer Id)
@@ -45,7 +46,7 @@ class Post {
     - String size
     - String location
     - PostStatus status
-    - Image Image
+    - String ImageId
     + ClothingItem(Integer Id, Integer ownerId, String name, String brand, String typeOfClothing, String description, double price, String condition, String size, String location, PostStatus status Image image)
     + Integer getId()
     + void setId(Integer Id)
@@ -114,27 +115,63 @@ class UserService {
 }
 
 class UserController {
-    
+    + getUser(@PathVariable int id)
+    + getAllUsers()
+    + updateUser(@PathVariable int id, @RequestBody User user)
+    + deleteUser(@PathVariable int id)
+    + updatePassword(@PathVariable int id, @RequestBody String password)
+    + updateRole(@PathVariable int id, @RequestBody UserRole role)
 }
 
 class IPostRepository {
-    
+    + Post write(Post post)
+    + Optional<Post> findById(int id)
+    + Optional<Post> findByOwnerId(String ownerId)
+    + List<Post> findAll()
+    + List<Post> findAllByOwnerId()
+    + void update(Post post)
+    + void delete(int id)
 }
 
 class PostRepository {
-    
+    + Post write(Post post)
+    + Optional<Post> findById(int id)
+    + List<Post> findAll()
+    + List<Post> findAllByOwnerId(String ownerId)
+    + void update(Post post)
+    + void delete(int id)
 }
 
 class IPostService {
-    
+    + Post createPost(Post post);
+    + Optional<Post> getPostById(int id);
+    + List<Post> getPostsByOwnerId(String ownerId);
+    + List<Post> getAllPosts();
+    + void updatePost(Post post);
+    + void deletePost(int id);
+    + void markAsSold(int postId);
+    + void markAsReserved(int postId)
 }
 
 class PostService {
-    
+    + Post createPost(Post post);
+    + Optional<Post> getPostById(int id);
+    + List<Post> getPostsByOwnerId(String ownerId);
+    + List<Post> getAllPosts();
+    + void updatePost(Post post);
+    + void deletePost(int id);
+    + void markAsSold(int postId);
+    + void markAsReserved(int postId)
 }
 
 class PostController {
-    
+    + createPost(@RequestBody Post post)
+    + getAllPosts()
+    + getPostById(@PathVariable int id)
+    + updatePost(@PathVariable int id, @RequestBody Post post)
+    + deletePost(@PathVariable int id)
+    + markAsSold(@PathVariable int postId)
+    + markAsReserved(@PathVariable int postId)
 }
 
 
@@ -175,8 +212,16 @@ class PostStatus {
     PostRepository ..|> IPostRepository :Implements
 
 %% Dependency injections
-
+    UserController --> UserService
+    UserService --> IUserRepository
+    PostController --> PostService
+    PostService --> IPostRepository
 
 %% Relationships
+    User "1" --> "many" Post : owns
+    Post --> User : ownerId (via id)
+    Post "1" -- "1" PostStatus : "has a status"
+    User "1" -- "1" UserRole : "has a role"
+    
 
 ```
