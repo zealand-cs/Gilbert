@@ -1,4 +1,4 @@
-# Domain model
+ # Domain model
 
 ```mermaid
 ---
