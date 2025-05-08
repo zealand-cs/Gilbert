@@ -6,9 +6,9 @@
 <body>
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.register.header}"></h1>
-    <form method="post" th:action="@{/register(redirect=${redirect})}">
+    <form method="post" th:action="${registerUrl}">
         <label>
-            <input th:placeholder="#{auth.register.displayNameLabel}" type="text" name="display_name" required>
+            <input th:placeholder="#{auth.register.displayNameLabel}" type="text" name="displayName" required>
             <span th:text="#{auth.register.displayNameDescription}"></span>
         </label>
         <label>
@@ -18,6 +18,10 @@
         <label>
             <input th:placeholder="#{auth.register.passwordLabel}" type="password" name="password" required>
             <span th:text="#{auth.register.passwordDescription}"></span>
+        </label>
+        <label>
+            <input type="checkbox" name="termsAccepted">
+            <span th:text="#{auth.register.termsDescription}"></span>
         </label>
         <button type="submit" th:text="#{auth.register.submitRegistrationLabel}"></button>
     </form>

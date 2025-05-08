@@ -6,7 +6,7 @@
 <body>
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.header}"></h1>
-    <form method="post" th:action="@{/auth/redirect(redirect=${redirect})}">
+    <form method="post" th:action="${url}">
         <label>
             <span th:text="#{auth.login.emailLabel}"></span>
             <input type="email" name="email" required>

@@ -6,7 +6,7 @@
 <body>
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.login.header}"></h1>
-    <form method="post" th:action="@{/login(redirect=${redirect})}">
+    <form method="post" th:action="${loginUrl}">
         <label>
             <input th:placeholder="#{auth.login.emailLabel}" type="email" name="email" th:value="${email}">
         </label>

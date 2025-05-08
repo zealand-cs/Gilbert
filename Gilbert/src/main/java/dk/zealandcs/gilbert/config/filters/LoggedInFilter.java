@@ -1,4 +1,4 @@
-package dk.zealandcs.gilbert.config;
+package dk.zealandcs.gilbert.config.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-public class AuthFilter implements Filter {
+public class LoggedInFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         var req = (HttpServletRequest) request;
@@ -16,8 +16,8 @@ public class AuthFilter implements Filter {
 
         var user = Optional.ofNullable(req.getSession().getAttribute("currentUser"));
 
-        if (user.isEmpty()) {
-            var redirect = "/auth?redirect=" + req.getRequestURI();
+        if (user.isPresent()) {
+            var redirect = "/";
             req = new HttpServletRequestWrapper((HttpServletRequest) request) {
                 @Override
                 public String getRequestURI() {
