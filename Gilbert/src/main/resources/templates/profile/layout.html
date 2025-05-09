@@ -8,24 +8,28 @@
     <div class="profile-column">
         <div class="profile-header">
             <div class="profile-picture">
-                <img th:src="@{/${user.getId()}/pfp}" alt="profile picture for someone">
+                <img th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
             </div>
             <div class="profile-public-info">
+                <h2 class="profile-display-name" th:text="${profileUser.getDisplayName()}"></h2>
+                <div class="profile-username">@<span th:text="${profileUser.getUsername()}"></span></div>
                 <div class="profile-followers"></div>
                 <div class="profile-following"></div>
-                <div class="profile-badge" th:text="${user.getBadge()}"></div>
-                <div class="profile-username">@<span th:text="${user.getUsername()}"></span></div>
+                <div class="profile-badge" th:text="${profileUser.getUsername()}"></div>
             </div>
         </div>
         <div class="profile-menu">
             <nav>
                 <!-- Annoncer? -->
-                <a th:href="@{/${user.getId()}/posts}" th:text="#{profile.menu.postsLabel}"></a>
-                <a th:href="@{/${user.getId()}/sales}" th:text="#{profile.menu.salesLabel}"></a>
-                <a th:href="@{/${user.getId()}/orders}" th:text="#{profile.menu.ordersLabel}"></a>
-                <a th:href="@{/${user.getId()}/info}" th:text="#{profile.menu.infoLabel}"></a>
-                <a th:href="@{/${user.getId()}/help}" th:text="#{profile.menu.helpLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/posts'}" th:text="#{profile.menu.postsLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/sales'}" th:text="#{profile.menu.salesLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/orders'}" th:text="#{profile.menu.ordersLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/info'}" th:text="#{profile.menu.infoLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/help'}" th:text="#{profile.menu.helpLabel}"></a>
             </nav>
+        </div>
+        <div>
+            <section layout:fragment="profile-page-content"></section>
         </div>
     </div>
 </section>

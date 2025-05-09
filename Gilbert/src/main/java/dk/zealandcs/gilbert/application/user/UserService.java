@@ -42,6 +42,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public User login(String email, String password) throws EmailNotFoundException, InvalidPasswordException {
         var user = userRepository.findByEmail(email);
 
