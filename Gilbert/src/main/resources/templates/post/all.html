@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+<section>
+    <h1>All Posts</h1>
+    <a href="/posts/createpost">Create post</a>
+
+    <div th:each="post : ${posts}">
+        <a th:href="@{'/posts/' + ${post.id}}" style="text-decoration: none; color: inherit;">
+            <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+                <img th:src="@{'/images/' + ${post.imageId}}" alt="Post Image" width="150" height="150">
+                <h2 th:text="${post.name}">Post Name</h2>
+                <p><strong>Price:</strong> <span th:text="${post.price}">0.00</span> DKK</p>
+                <p><strong>Condition:</strong> <span th:text="${post.condition}">NEW</span></p>
+            </div>
+        </a>
+    </div>
+
+</section>
+</body>
+</html>
