@@ -1,4 +1,4 @@
-package dk.zealandcs.gilbert.config;
+package dk.zealandcs.gilbert.config.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

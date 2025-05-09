@@ -2,7 +2,12 @@ package dk.zealandcs.gilbert.presentation;
 
 import dk.zealandcs.gilbert.application.user.IUserService;
 import dk.zealandcs.gilbert.domain.user.User;
-import dk.zealandcs.gilbert.domain.user.UserRegister;
+import dk.zealandcs.gilbert.domain.user.RegisterUser;
+import dk.zealandcs.gilbert.domain.validators.EmailValidator;
+import dk.zealandcs.gilbert.exceptions.EmailInUseException;
+import dk.zealandcs.gilbert.exceptions.EmailNotFoundException;
+import dk.zealandcs.gilbert.exceptions.InvalidEmailFormatException;
+import dk.zealandcs.gilbert.exceptions.InvalidPasswordException;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,56 +23,75 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final IUserService userService;
 
-    AuthController(IUserService userService) { this.userService = userService; }
+    AuthController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public String authPage(@RequestParam(required = false) String redirect, Model model) {
-        // Optional is not used here, since we can just pass a nullable object to the model.
-        // This spares us an if statement that is made in the model anyways.
-        model.addAttribute("redirect", redirect);
+    public String authPage(@RequestParam Optional<String> redirect, Model model) {
+        var redirectParam = redirect.map(s -> "?redirect=" + s).orElse("");
+        model.addAttribute("url", "/auth/entry" + redirectParam);
         return "auth/index";
     }
 
-    @PostMapping("/redirect")
-    public String authPageRedirect(@RequestParam String email, @RequestParam Optional<String> redirect) {
+    @PostMapping("/entry")
+    public String authPageRedirect(@RequestParam String email, @RequestParam Optional<String> redirect, Model model) {
+        try {
+            EmailValidator.isValid(email);
+        } catch (InvalidEmailFormatException e) {
+            model.addAttribute("emailError", true);
+            return "auth/index";
+        }
+
         logger.info("Getting user by email: {}", email);
         var user = userService.getUserByEmail(email);
 
-        var redirectParam = "";
-        if (redirect.isPresent()) {
-            logger.info("Redirect found: {}", redirect.get());
-            redirectParam = "&redirect=" + redirect.get();
-        }
+        model.addAttribute("email", email);
+
+        var redirectParam = redirect.map(s -> "?redirect=" + s).orElse("");
 
         if (user.isEmpty()) {
-            return "redirect:/auth/register?email=" + email + redirectParam;
+            model.addAttribute("registerUrl", "/auth/register" + redirectParam);
+            return "auth/register";
+        } else {
+            model.addAttribute("loginUrl", "/auth/login" + redirectParam);
+            return "auth/login";
         }
-        else {
-            return "redirect:/auth/login?email=" + email + redirectParam;
-        }
-    }
-
-    @GetMapping("/login")
-    public String loginPage(@RequestParam(required = false) String email, @RequestParam(required = false) String redirect, Model model) {
-        logger.info("Email found: {}", email);
-        model.addAttribute("email", email);
-        model.addAttribute("redirect", redirect);
-
-        return "auth/login";
     }
 
     @PostMapping("/login")
-    public String loginRequest(@ModelAttribute User user, @RequestParam Optional<String> redirect, HttpSession session, Model model) {
-        logger.info("Login attempt for email: {}", user.getEmail());
-        var loggedIn = userService.login(user.getEmail(), user.getPassword());
+    public String loginRequest(@RequestParam String email, @RequestParam String password, @RequestParam Optional<String> redirect, HttpSession session, Model model) {
+        logger.info("Login attempt for email: {}", email);
 
-        if (loggedIn.isEmpty()) {
-            logger.warn("Login failed for email: {}", user.getEmail());
+        try {
+            var loggedIn = userService.login(email, password);
+
+            logger.info("Login attempt successful for email {}", email);
+            session.setAttribute("currentUser", loggedIn);
+
+            if (redirect.isPresent()) {
+                logger.debug("Redirecting to {}", redirect.get());
+                return "redirect:" + redirect.get();
+            } else {
+                logger.debug("No redirect url found. Redirecting to front page.");
+                return "redirect:../";
+            }
+        } catch (EmailNotFoundException | InvalidPasswordException e) {
+            logger.warn("Login failed for {}", email, e);
             model.addAttribute("error", "Ugyldig email eller adgangskode");
             return "auth/login";
-        } else {
-            logger.info("Login attempt successful for email {}", user.getEmail());
-            session.setAttribute("currentUser", loggedIn.get());
+        }
+    }
+
+    @PostMapping("/register")
+    public String registerRequest(@ModelAttribute RegisterUser user, @RequestParam Optional<String> redirect, HttpSession session, Model model) {
+        logger.info("Registration for email: {}", user.getEmail());
+        try {
+            // TODO: Catch all errors and show
+            var registered = userService.register(user);
+
+            logger.debug("Successful registration with {}", user.getEmail());
+            session.setAttribute("currentUser", registered);
 
             if (redirect.isPresent()) {
                 logger.debug("Redirecting to {}", redirect.get());
@@ -76,38 +100,10 @@ public class AuthController {
                 logger.debug("No redirect url found. Redirecting to front page.");
                 return "redirect:/";
             }
-        }
-    }
-
-    @GetMapping("/register")
-    public String registerPage(@RequestParam(required = false) String email, @RequestParam(value = "redirect", required = false) String redirectUrl, Model model) {
-        logger.info("Email found: {}", email);
-        model.addAttribute("email", email);
-        model.addAttribute("redirect", redirectUrl);
-
-        return "auth/register";
-    }
-
-    @PostMapping("/register")
-    public String registerRequest(@ModelAttribute UserRegister user, @RequestParam Optional<String> redirect, HttpSession session, Model model) {
-        logger.info("Registration for email: {}", user.getEmail());
-        var registered = userService.register(user);
-
-        if (registered.isEmpty()) {
-            logger.warn("Registration failed for email: {}", user.getEmail());
+        } catch (EmailInUseException e) {
+            logger.warn("Email already in use: {}", user.getEmail());
             model.addAttribute("error", "Email already in use");
             return "auth/register";
-        }
-
-        logger.debug("Successful registration with {}", user.getEmail());
-        session.setAttribute("currentUser", registered);
-
-        if (redirect.isPresent()) {
-            logger.debug("Redirecting to {}", redirect.get());
-            return "redirect:" + redirect.get();
-        } else {
-            logger.debug("No redirect url found. Redirecting to front page.");
-            return "redirect:/";
         }
     }
 

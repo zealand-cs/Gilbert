@@ -6,13 +6,15 @@
 <body>
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.login.header}"></h1>
-    <form method="post" th:action="@{/login(redirect=${redirect})}">
-        <label>
-            <input th:placeholder="#{auth.login.emailLabel}" type="email" name="email" th:value="${email}">
-        </label>
-        <label>
-            <input th:placeholder="#{auth.login.passwordLabel}" type="password" name="password">
-        </label>
+    <form method="post" th:action="${loginUrl}">
+        <div class="field">
+            <label for="email" th:text="#{auth.login.emailLabel}"></label>
+            <input id="email" th:placeholder="#{auth.login.emailLabel}" type="email" name="email" th:value="${email}">
+        </div>
+        <div class="field">
+            <label for="password" th:text="#{auth.login.passwordLabel}"></label>
+            <input id="password" th:placeholder="#{auth.login.passwordLabel}" type="password" name="password">
+        </div>
         <button type="submit" th:text="#{auth.login.submitLoginLabel}"></button>
     </form>
     <p th:text="${error}"></p>

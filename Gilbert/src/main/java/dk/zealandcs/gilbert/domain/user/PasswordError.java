@@ -1,7 +1,8 @@
 package dk.zealandcs.gilbert.domain.user;
 
-public enum PasswordProblem {
+public enum PasswordError {
     TooFewCharacters,
-    MissingCapitalLetter,
+    MissingUpperCaseLetter,
+    MissingLowerCaseLetter,
     MissingNumber,
 }

@@ -1,9 +1,14 @@
 package dk.zealandcs.gilbert.application.user;
 
 import dk.zealandcs.gilbert.domain.user.User;
-import dk.zealandcs.gilbert.domain.user.UserRegister;
+import dk.zealandcs.gilbert.domain.user.RegisterUser;
 import dk.zealandcs.gilbert.domain.user.UserRole;
+import dk.zealandcs.gilbert.domain.validators.DisplayNameValidator;
+import dk.zealandcs.gilbert.domain.validators.EmailValidator;
+import dk.zealandcs.gilbert.domain.validators.PasswordValidator;
+import dk.zealandcs.gilbert.exceptions.*;
 import dk.zealandcs.gilbert.infrastruture.user.IUserRepository;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,19 +18,22 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final IUserRepository userRepository;
 
-    UserService(IUserRepository userRepository) { this.userRepository = userRepository; }
+    UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<User> allUsers() {
-        return List.of();
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> getUser(int id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
 
     @Override
@@ -34,16 +42,51 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> login(String email, String password) {
-        return Optional.empty();
+    public User login(String email, String password) throws EmailNotFoundException, InvalidPasswordException {
+        var user = userRepository.findByEmail(email);
+
+        if (user.isEmpty()) {
+            throw new EmailNotFoundException();
+        }
+
+        if (!user.get().checkPassword(password)) {
+            throw new InvalidPasswordException();
+        }
+
+        return user.get();
     }
 
     @Override
-    public Optional<User> register(UserRegister user) {
-        if (!user.verify()) {
-
+    public User register(RegisterUser user) throws InvalidDisplayNameException, InvalidPasswordFormatException, EmailInUseException {
+        try {
+            DisplayNameValidator.isValid(user.getDisplayName());
+        } catch (InvalidDisplayNameException e) {
+            throw new NotImplementedException();
         }
-        return Optional.empty();
+        try {
+            EmailValidator.isValid(user.getEmail());
+        } catch (InvalidEmailFormatException e) {
+            throw new NotImplementedException();
+        }
+        try {
+            PasswordValidator.isValid(user.getPassword());
+        } catch (InvalidPasswordFormatException e) {
+            throw new NotImplementedException();
+        }
+
+        if (!user.isAcceptedTerms()) {
+            throw new NotImplementedException();
+        }
+
+        var emailCheckUser = userRepository.findByEmail(user.getEmail());
+        if (emailCheckUser.isPresent()) {
+            throw new EmailInUseException("Email already in use");
+        }
+
+        var insertUser = new User(user);
+        insertUser.hashPassword();
+
+        return userRepository.write(insertUser);
     }
 
     @Override

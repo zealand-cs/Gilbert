@@ -6,11 +6,12 @@
 <body>
 <section layout:fragment="auth-content">
     <h1 th:text="#{auth.header}"></h1>
-    <form method="post" th:action="@{/auth/redirect(redirect=${redirect})}">
-        <label>
-            <span th:text="#{auth.login.emailLabel}"></span>
-            <input type="email" name="email" required>
-        </label>
+    <form method="post" th:action="${url}">
+        <div class="field">
+            <label for="email" th:text="#{auth.emailLabel}"></label>
+            <input id="email" type="email" name="email" required>
+            <p class="field-error" th:if="${emailError}" th:text="#{auth.emailErrorLabel}"></p>
+        </div>
         <button type="submit" th:text="#{auth.submit}"></button>
     </form>
 </section>

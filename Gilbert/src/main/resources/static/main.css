@@ -77,18 +77,35 @@ html, body {
 
         gap: 1.2rem;
 
-        & label {
+        & .field {
             display: flex;
             flex-direction: column;
+
+            &.horizontal {
+                flex-direction: row;
+
+                & label {
+                    padding-left: 2rem;
+                }
+            }
+
+            & label {
+                display: flex;
+                flex-direction: column;
+            }
+
+            & input[type="text"], input[type="password"], input[type="email"] {
+                width: 100%;
+            }
+
+            & input[type="checkbox"] {
+                margin: 0;
+            }
+
+            & p {
+                margin: 0;
+            }
         }
 
-        & label input {
-            width: 100%;
-        }
-
-        & label span {
-            margin: 0;
-            font-size: 0.7rem;
-        }
     }
 }
