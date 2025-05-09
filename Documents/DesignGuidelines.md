@@ -3,9 +3,8 @@
 ## Colors
 
 Dominant: #004224 (Green)
-Secondary: #223a2b (Brown)
+Secondary: #423a2b (Brown)
 Text: #f8f0e5 (White-ish)
-
 
 ## Font
 
