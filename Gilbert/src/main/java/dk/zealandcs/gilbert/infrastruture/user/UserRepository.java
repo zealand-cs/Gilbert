@@ -54,24 +54,18 @@ public class UserRepository implements IUserRepository {
         }
     }
 
-    @Override
-    public Optional<User> findById(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        String sql = "SELECT id, display_name, username, email, password, terms_agreement_date, role FROM users WHERE email = ?";
-        try (Connection conn = databaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setString(1, email);
-            logger.info("Attempting to find user with email {} ", email);
+    public Optional<User> findByField(String field, String value) {
+        String sql = "SELECT id, display_name, username, email, password, terms_agreement_date, role FROM users WHERE " + field + " = ?";
+        try (Connection conn = databaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, value);
+            logger.info("Attempting to find user by {} with {} ", field, value);
             var rs = stmt.executeQuery();
             if (rs.next()) {
                 return userFromResultSet(rs);
             }
             return Optional.empty();
         } catch (SQLException e) {
-            logger.error("Error while trying to find user with email {} ", email);
+            logger.warn("Error while trying to find user by {} with {} ", field, value);
             return Optional.empty();
         }
     }
@@ -91,7 +85,7 @@ public class UserRepository implements IUserRepository {
 
     }
 
-    //Converts resultset to User object
+    //Converts a result set into a user object
     Optional<User> userFromResultSet(ResultSet rs) {
         try {
             var user = new User(rs.getString("display_name"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getDate("terms_agreement_date"));

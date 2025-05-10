@@ -7,9 +7,18 @@ import java.util.Optional;
 
 public interface IUserRepository {
     User write(User user);
-    Optional<User> findById(int id);
-    Optional<User> findByEmail(String email);
+    Optional<User> findByField(String field, String value);
     List<User> findAll();
     void update(User user);
     void delete(int id);
+
+    default Optional<User> findById(int id) {
+        return findByField("id", String.valueOf(id));
+    }
+    default Optional<User> findByEmail(String email) {
+        return findByField("email", email);
+    }
+    default Optional<User> findByUsername(String username) {
+        return findByField("username", username);
+    }
 }

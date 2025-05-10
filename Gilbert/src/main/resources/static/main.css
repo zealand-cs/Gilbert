@@ -2,12 +2,40 @@
     --header-height: 60px;
     --navigation-height: 60px;
 
+    --primary: #004224;
+    --secondary: #423a2b;
+
+    --background: var(--primary);
+
+    --text: #f8f0f5;
+
     box-sizing: border-box;
 }
 
 html, body {
     margin: 0;
     padding: 0;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.outlinedIcon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.filledIcon {
+    fill: currentColor;
+    stroke: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .app-header {
@@ -46,10 +74,13 @@ html, body {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        color: var(--text);
     }
 
-    & a img {
+    & a svg {
         height: 100%;
+        aspect-ratio: 1;
     }
 }
 
@@ -106,6 +137,38 @@ html, body {
                 margin: 0;
             }
         }
-
     }
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: row;
+
+    height: 8rem;
+    width: 100%;
+
+    padding: 1rem;
+
+    & .profile-picture, .profile-picture img {
+        height: 100%;
+        aspect-ratio: 1;
+        border-radius: 500px;
+    }
+
+    & .profile-display-name {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+
+    & .profile-username {
+        font-size: 0.7rem;
+    }
+}
+
+& .profile-menu nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    width: 100%;
 }

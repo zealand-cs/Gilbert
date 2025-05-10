@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"></title>
 
-    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/main.css"/>
 </head>
 <body>
-<header th:replace="~{/fragments/header :: header}"></header>
 <nav th:replace="~{/fragments/navigation :: navigation}"></nav>
+<svg th:replace="~{/fragments/icons :: icons}"></svg>
 <section layout:fragment="content"></section>
-<footer th:replace="~{/fragments/footer :: footer}"></footer>
 </body>
 </html>

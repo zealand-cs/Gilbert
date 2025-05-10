@@ -12,6 +12,7 @@ public interface IUserService {
     List<User> allUsers();
     Optional<User> getUser(int id);
     Optional<User> getUserByEmail(String email);
+    Optional<User> getUserByUsername(String username);
     User login(String email, String password) throws EmailNotFoundException, InvalidPasswordException;
     User register(RegisterUser user) throws InvalidDisplayNameException, InvalidPasswordFormatException, EmailInUseException, UserWriteException;
     boolean deleteUser(User executingUser, User targetUser);

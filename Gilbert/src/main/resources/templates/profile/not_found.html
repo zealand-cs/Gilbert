@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
+<head>
+    <title th:text="#{profile.notFound.title}"></title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="not-found-container">
+        <h1 th:text="#{profile.notFound.header}"></h1>
+        <p th:text="#{profile.notFound.description}"></p>
+    </div>
+</section>
+</body>
+</html>
