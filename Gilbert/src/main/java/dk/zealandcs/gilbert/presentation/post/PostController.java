@@ -1,6 +1,6 @@
 package dk.zealandcs.gilbert.presentation.post;
 
-import ch.qos.logback.core.model.Model;
+import org.springframework.ui.Model;
 import dk.zealandcs.gilbert.application.post.IPostService;
 import dk.zealandcs.gilbert.domain.post.Post;
 import dk.zealandcs.gilbert.domain.user.User;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -55,6 +56,13 @@ public class PostController {
         }
 
         return "posts/createpost";
+    }
+
+    @GetMapping
+    public String getAllPosts(Model model) {
+        List<Post> posts = postService.allPosts();
+        model.addAttribute("posts", posts);
+        return "post/all";
     }
 
 }

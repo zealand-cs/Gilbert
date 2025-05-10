@@ -17,9 +17,13 @@ import java.util.Optional;
 @Repository
 public class PostRepository implements IPostRepository {
     private static final Logger logger = LoggerFactory.getLogger(PostRepository.class);
-    @Autowired
-    private DatabaseConfig databaseConfig;
 
+
+    private final DatabaseConfig databaseConfig;
+
+    public PostRepository(DatabaseConfig databaseConfig) {
+        this.databaseConfig = databaseConfig;
+    }
 
     /**
      * Writes a new post to the database from given paramaters.

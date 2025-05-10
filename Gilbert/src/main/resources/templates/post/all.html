@@ -2,24 +2,163 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Posts</title>
+    <title>Current Sales</title>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/main.css"/>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .posts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .post-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-info {
+            padding: 15px;
+        }
+
+        .post-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .post-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+
+        .post-seller {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .post-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .post-condition {
+            background-color: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 40px;
+            grid-column: 1 / -1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
 </head>
 <body>
-<section>
-    <h1>All Posts</h1>
-    <a href="/posts/createpost">Create post</a>
 
-    <div th:each="post : ${posts}">
-        <a th:href="@{'/posts/' + ${post.id}}" style="text-decoration: none; color: inherit;">
-            <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-                <img th:src="@{'/images/' + ${post.imageId}}" alt="Post Image" width="150" height="150">
-                <h2 th:text="${post.name}">Post Name</h2>
-                <p><strong>Price:</strong> <span th:text="${post.price}">0.00</span> DKK</p>
-                <p><strong>Condition:</strong> <span th:text="${post.condition}">NEW</span></p>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+<div class="container">
+    <h1>Browse Items</h1>
+
+    <div class="posts-grid">
+
+        <div th:if="${#lists.isEmpty(posts)}" class="no-posts">
+            <p>No items are available at the moment.</p>
+        </div>
+
+
+        <div th:each="post : ${posts}" class="post-card">
+
+            <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
+                 th:src="@{/images/{id}(id=${post.imageId})}"
+                 alt="Product Image"
+                 class="post-image">
+
+            <img th:if="${post.imageId == null || post.imageId.isEmpty()}"
+                 src="https://via.placeholder.com/300x200"
+                 alt="No Image Available"
+                 class="post-image">
+
+            <div class="post-info">
+                <h3 class="post-name" th:text="${post.name}">Post Name</h3>
+                <p class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</p>
+                <p class="post-seller">Seller ID: <span th:text="${post.ownerId}">Owner ID</span></p>
+
+                <div class="post-details">
+                    <span th:text="${post.size}">Size</span>
+                    <span th:text="${post.brand}">Brand</span>
+                    <span class="post-condition" th:text="${post.condition}">Condition</span>
+                </div>
             </div>
-        </a>
-    </div>
 
-</section>
+
+            <a th:href="@{/posts/{id}(id=${post.id})}" style="text-decoration: none; color: inherit;">
+                <div style="text-align: center; padding: 10px; background-color: #f8f8f8; border-top: 1px solid #eee;">
+                    View Details
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
