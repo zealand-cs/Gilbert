@@ -160,7 +160,18 @@ public class PostRepository implements IPostRepository {
 
     }
 
-    public void delete(int id) {}
+    public void delete(int id) {
+        String sql = "DELETE FROM posts WHERE id = ?";
+        try (Connection conn = databaseConfig.getConnection();
+        var stmt= conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            logger.info("Deleted post with id {}", id);
+        } catch (SQLException e) {
+            logger.error("SQL Exception error deleting post {}", id, e);
+        }
+
+    }
 
 
     public List<Brand> getAllBrands() {

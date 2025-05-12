@@ -5,6 +5,7 @@ import dk.zealandcs.gilbert.domain.post.Brand;
 import dk.zealandcs.gilbert.domain.post.Post;
 import dk.zealandcs.gilbert.domain.post.ProductType;
 import dk.zealandcs.gilbert.domain.user.User;
+import dk.zealandcs.gilbert.domain.user.UserRole;
 import dk.zealandcs.gilbert.infrastruture.post.IPostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,13 @@ public class PostService implements IPostService {
 
     @Override
     public boolean deletePost(User executingUser, Post post) {
+        logger.info("Delete post {}", post);
+        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.Employee)) {
+            postRepository.delete(post.getId());
+            logger.info("Deleted post {}", post);
+            return true;
+        }
+        logger.warn("User {} is not allowed to delete post {}", executingUser.getUsername(), post.getName());
         return false;
     }
 

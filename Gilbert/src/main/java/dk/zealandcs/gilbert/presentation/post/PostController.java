@@ -82,6 +82,26 @@ public class PostController {
         return "post/details";
     }
 
+    @PostMapping("/{postId}/delete")
+    public String deletePost(@PathVariable int postId, HttpSession session, Model model) {
+        var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
+        if (currentUser.isEmpty()) {
+            logger.warn("Redirecting user to login page");
+            return "redirect:/auth";
+        }
+        var post = postService.getPost(postId);
+        if (post.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+        }
+        if (postService.deletePost(currentUser.get(), post.get())) {
+            logger.info("Post deleted with id {}", postId);
+            return "redirect:/posts";
+        }
+        logger.warn("User {} is not allowed to delete post {}", currentUser.get().getUsername(), post.get().getName());
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to delete post");
+    }
+
+
 
 
 }
