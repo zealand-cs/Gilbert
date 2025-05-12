@@ -5,6 +5,115 @@
     <title>Post Details</title>
     <th:block th:replace="~{fragments/header :: header}"></th:block>
     <link rel="stylesheet" href="/main.css"/>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .post-details {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+        }
+
+        .info-section {
+            padding: 20px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .post-details h1 {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .info-section p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .info-section p span {
+            color: #333;
+            font-weight: normal;
+        }
+
+        .seller-info {
+            margin-bottom: 15px;
+        }
+
+        .seller-info span {
+            font-weight: bold;
+            color: #050505;
+        }
+
+        .contact-btn {
+            padding: 10px 20px;
+            background-color: #e94560;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .contact-btn:hover {
+            background-color: #d33c55;
+        }
+
+        @media (min-width: 768px) {
+            .post-details {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .post-details h1 {
+                grid-column: 1 / -1;
+            }
+
+            .post-image {
+                height: 100%;
+                border-right: 1px solid #eee;
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .post-image {
+                max-height: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
@@ -12,7 +121,7 @@
 <div class="container">
     <div class="post-details">
         <h1 th:text="${post.name}">Post Name</h1>
-
+        <div>
         <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
              th:src="@{/images/{id}(id=${post.imageId})}"
              alt="Product Image"
@@ -22,6 +131,7 @@
              src="https://via.placeholder.com/300x200"
              alt="No Image Available"
              class="post-image">
+        </div>
 
         <div class="info-section">
             <p class="price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</p>
@@ -29,9 +139,11 @@
             <p class="seller-info">Seller: <span th:text="${post.ownerDisplayName}">Owner Name</span></p>
             <p>Size: <span th:text="${post.size}">Size</span></p>
             <p>Brand: <span th:text="${post.brand != null ? post.brand.name : ''}">Brand</span></p>
-            <p>Condition: <span th:text="${post.condition}">Condition</span></p>
+            <p>class="post-condition"> Condition: <span th:text="${post.condition}">Condition</span></p>
             <p>Location: <span th:text="${post.location}">Location</span></p>
             <p>Posted on: <span th:text="${#dates.format(post.datePostedAt, 'dd-MM-yyyy')}">Date</span></p>
+
+            <a href="#" class="contact-btn">Contact Seller</a>
         </div>
     </div>
 </div>
