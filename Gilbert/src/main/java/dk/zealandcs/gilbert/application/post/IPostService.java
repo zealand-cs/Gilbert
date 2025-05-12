@@ -19,4 +19,5 @@ public interface IPostService{
     boolean deletePost(User executingUser, Post post);
     List<Brand> getAllBrands();
     List<ProductType> getAllProductTypes();
+    Optional<Post> findById(int id);
 }

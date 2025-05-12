@@ -30,7 +30,8 @@ public class PostRepository implements IPostRepository {
     @Override
     public Post write(Post post) {
         String sql = "INSERT INTO posts(owner_id, name, description, price, item_condition, size, location," +
-                " status, image_id, brands_id, product_type_id, date_posted_at\n) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " status, image_id, brands_id, product_type_id, date_posted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -46,7 +47,6 @@ public class PostRepository implements IPostRepository {
             stmt.setString(9, post.getImageId() != null ? post.getImageId() : "default");
             stmt.setInt(10, post.getBrand().getId());
             stmt.setInt(11, post.getTypeOfClothing().getId());
-
             stmt.setTimestamp(12, new Timestamp(post.getDatePostedAt().getTime()));
 
             int rowsAffected = stmt.executeUpdate();
@@ -72,7 +72,7 @@ public class PostRepository implements IPostRepository {
      * Finds a given post by the posts id
      */
     public Optional<Post> findById(int id) {
-        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts WHERE id = ?";
+        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM posts WHERE id = ?";
         try (Connection conn = databaseConfig.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);) {
             logger.info("Getting post by id {}: " + id);
@@ -86,7 +86,7 @@ public class PostRepository implements IPostRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            logger.error("SQL Exception error getting cat {}", id, e);
+            logger.error("SQL Exception error getting post {}", id, e);
             return Optional.empty();
         }
     }
@@ -201,7 +201,7 @@ public class PostRepository implements IPostRepository {
             post.setName(rs.getString("name"));
             post.setDescription(rs.getString("description"));
             post.setPrice(rs.getDouble("price"));
-            post.setCondition(Condition.valueOf(rs.getString("condition")));
+            post.setCondition(Condition.valueOf(rs.getString("item_condition")));
             post.setSize(rs.getString("size"));
             post.setLocation(rs.getString("location"));
             post.setImageId(rs.getString("image_id"));
@@ -213,13 +213,11 @@ public class PostRepository implements IPostRepository {
             }
 
             Brand brand = new Brand();
-            brand.setId(rs.getInt("brand_id"));
-            brand.setName(rs.getString("brand_name"));
+            brand.setId(rs.getInt("brands_id"));
             post.setBrand(brand);
 
             ProductType type = new ProductType();
             type.setId(rs.getInt("product_type_id"));
-            type.setName(rs.getString("product_type_name"));
             post.setTypeOfClothing(type);
 
             return Optional.of(post);

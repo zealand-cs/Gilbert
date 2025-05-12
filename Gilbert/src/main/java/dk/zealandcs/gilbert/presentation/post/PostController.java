@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
@@ -74,5 +71,17 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "post/all";
     }
+
+    @GetMapping("/{id}")
+    public String getPost(@PathVariable int id, Model model) {
+        var post = postService.findById(id);
+        if (post.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+        }
+        model.addAttribute("post", post.get());
+        return "post/details";
+    }
+
+
 
 }

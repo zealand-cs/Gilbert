@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Details</title>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/main.css"/>
+</head>
+<body>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+<div class="container">
+    <div class="post-details">
+        <h1 th:text="${post.name}">Post Name</h1>
+
+        <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
+             th:src="@{/images/{id}(id=${post.imageId})}"
+             alt="Product Image"
+             class="post-image">
+
+        <img th:if="${post.imageId == null || post.imageId.isEmpty()}"
+             src="https://via.placeholder.com/300x200"
+             alt="No Image Available"
+             class="post-image">
+
+        <div class="info-section">
+            <p class="price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</p>
+            <p class="description" th:text="${post.description}">Description</p>
+            <p>Size: <span th:text="${post.size}">Size</span></p>
+            <p>Brand: <span th:text="${post.brand != null ? post.brand.name : ''}">Brand</span></p>
+            <p>Condition: <span th:text="${post.condition}">Condition</span></p>
+            <p>Location: <span th:text="${post.location}">Location</span></p>
+            <p>Posted on: <span th:text="${#dates.format(post.datePostedAt, 'dd-MM-yyyy')}">Date</span></p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

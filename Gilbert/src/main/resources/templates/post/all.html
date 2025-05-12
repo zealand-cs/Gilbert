@@ -157,7 +157,7 @@
 
                 <div class="post-details">
                     <span th:text="${post.size}">Size</span>
-                    <span th:text="${post.brand}">Brand</span>
+                    <span th:text="${post.brand != null ? post.brand.name : ''}">Brand</span>
                     <span class="post-condition" th:text="${post.condition}">Condition</span>
                 </div>
             </div>

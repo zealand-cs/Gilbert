@@ -70,4 +70,17 @@ public class PostService implements IPostService {
     public List<ProductType> getAllProductTypes() {
         return postRepository.getAllProductTypes();
     }
+
+    @Override
+    public Optional<Post> findById(int id) {
+        logger.debug("Finding post with id: {}", id);
+        var post = postRepository.findById(id);
+        if (post.isEmpty()) {
+            logger.warn("No post found with id: {}", id);
+        } else {
+            logger.debug("Found post: {}", post.get().getName());
+        }
+        return post;
+    }
+
 }
