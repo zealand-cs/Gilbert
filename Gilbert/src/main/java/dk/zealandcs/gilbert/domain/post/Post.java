@@ -19,11 +19,13 @@ public class Post {
     private PostStatus status = PostStatus.PendingApproval;
     private String imageId;
     private Date datePostedAt;
+    private String ownerDisplayName;
+
 
     public Post() {
     }
 
-    public Post(int id, int ownerId, String name, Brand brand, ProductType typeOfClothing, String description, double price, Condition condition, String size, String location, PostStatus status, String imageId, Date datePostedAt) {
+    public Post(int id, int ownerId, String name, Brand brand, ProductType typeOfClothing, String description, double price, Condition condition, String size, String location, PostStatus status, String imageId, Date datePostedAt, String ownerDisplayName) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -37,6 +39,7 @@ public class Post {
         this.status = PostStatus.PendingApproval;
         this.imageId = imageId;
         this.datePostedAt = datePostedAt;
+        this.ownerDisplayName = ownerDisplayName;
     }
 
     public int getId() {
@@ -141,6 +144,14 @@ public class Post {
 
     public void setDatePostedAt(Date datePostedAt) {
         this.datePostedAt = datePostedAt;
+    }
+
+    public String getOwnerDisplayName() {
+        return ownerDisplayName;
+    }
+
+    public void setOwnerDisplayName(String ownerDisplayName) {
+        this.ownerDisplayName = ownerDisplayName;
     }
 }
 

@@ -72,7 +72,15 @@ public class PostRepository implements IPostRepository {
      * Finds a given post by the posts id
      */
     public Optional<Post> findById(int id) {
-        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM posts WHERE id = ?";
+        String sql = """
+        SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
+        FROM posts p 
+        LEFT JOIN brands b ON p.brands_id = b.id 
+        LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+        LEFT JOIN users u ON p.owner_id = u.id
+        WHERE p.id = ?
+        """;
+
         try (Connection conn = databaseConfig.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);) {
             logger.info("Getting post by id {}: " + id);
@@ -120,7 +128,15 @@ public class PostRepository implements IPostRepository {
      * Finds all posts, no matter owner
      */
     public List<Post> findAll() {
-        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts";
+        String sql = """
+         SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name 
+         FROM posts p 
+         LEFT JOIN brands b ON p.brands_id = b.id 
+         LEFT JOIN product_types pt ON p.product_type_id = pt.id
+         LEFT JOIN users u ON p.owner_id = u.id
+    """;
+
+
         try (Connection conn = databaseConfig.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting all posts");
@@ -197,7 +213,7 @@ public class PostRepository implements IPostRepository {
         try {
             Post post = new Post();
             post.setId(rs.getInt("id"));
-            post.setOwnerId(rs.getInt("owner_id"));
+            post.setOwnerDisplayName(rs.getString("owner_display_name"));
             post.setName(rs.getString("name"));
             post.setDescription(rs.getString("description"));
             post.setPrice(rs.getDouble("price"));
@@ -214,6 +230,7 @@ public class PostRepository implements IPostRepository {
 
             Brand brand = new Brand();
             brand.setId(rs.getInt("brands_id"));
+            brand.setName(rs.getString("brand_name"));
             post.setBrand(brand);
 
             ProductType type = new ProductType();

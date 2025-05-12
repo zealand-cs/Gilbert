@@ -108,7 +108,13 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-    </style>
+
+        .seller-name {
+            color: #050505;
+            font-weight: bold;
+        }
+
+        </style>
 
 </head>
 <body>
@@ -152,15 +158,17 @@
 
             <div class="post-info">
                 <h3 class="post-name" th:text="${post.name}">Post Name</h3>
-                <p class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</p>
-                <p class="post-seller">Seller ID: <span th:text="${post.ownerId}">Owner ID</span></p>
-
+                <div class="post-details">
+                    <span th:text="${post.brand != null ? post.brand.name : 'No Brand'}">Brand</span>
+                    <span class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</span>
+                </div>
+                <p class="post-seller">Seller: <span class="seller-name" th:text="${post.ownerDisplayName}">Owner ID</span></p>
                 <div class="post-details">
                     <span th:text="${post.size}">Size</span>
-                    <span th:text="${post.brand != null ? post.brand.name : ''}">Brand</span>
                     <span class="post-condition" th:text="${post.condition}">Condition</span>
                 </div>
             </div>
+
 
 
             <a th:href="@{/posts/{id}(id=${post.id})}" style="text-decoration: none; color: inherit;">
