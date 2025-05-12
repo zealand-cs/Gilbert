@@ -55,7 +55,7 @@ public class UserRepository implements IUserRepository {
     }
 
     public Optional<User> findByField(String field, String value) {
-        String sql = "SELECT id, display_name, username, email, password, terms_agreement_date, role FROM users WHERE " + field + " = ?";
+        String sql = "SELECT id, display_name, username, email, password, profile_picture_id, terms_agreement_date, role FROM users WHERE " + field + " = ?";
         try (Connection conn = databaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, value);
             logger.info("Attempting to find user by {} with {} ", field, value);
@@ -77,18 +77,52 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void update(User user) {
+        String sql = "UPDATE users SET display_name = ?, username = ?, email = ?, password = ?, profile_picture_id = ?, terms_agreement_date = ?, role = ? WHERE id = ?";
 
+        logger.info("Attempting to update user {}", user.getId());
+
+        try (Connection conn = databaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getDisplayName());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPasswordHash());
+            stmt.setString(5, user.getProfilePictureId().orElse(null));
+            stmt.setDate(6, user.getTermsAcceptedDate());
+            stmt.setString(7, user.getRole().toString());
+            stmt.setInt(8, user.getId());
+            stmt.executeUpdate();
+            logger.info("Updated users {}", user.getId());
+        } catch (SQLException e) {
+            logger.warn("Error while updating user {}: {}", user.getId(), e);
+        }
     }
 
     @Override
     public void delete(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
 
+        logger.info("Attempting to delete user with id {} ", id);
+
+        try (Connection conn = databaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            logger.info("Deleted user with id {}", id);
+        } catch (SQLException e) {
+            logger.warn("Error while trying to delete user with id {} ", id);
+        }
     }
 
     //Converts a result set into a user object
     Optional<User> userFromResultSet(ResultSet rs) {
         try {
-            var user = new User(rs.getString("display_name"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getDate("terms_agreement_date"));
+            var user = new User(
+                    rs.getString("display_name"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("password"),
+                    rs.getString("profile_picture_id"),
+                    rs.getDate("terms_agreement_date")
+            );
             user.setId(rs.getInt("id"));
             user.setRole(UserRole.valueOf(rs.getString("role")));
             return Optional.of(user);

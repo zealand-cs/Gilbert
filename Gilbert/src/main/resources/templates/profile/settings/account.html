@@ -16,19 +16,18 @@
     <div class="settings-column">
         <h2>Account information</h2>
         <div class="settings-group">
-            <form>
+            <form method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/pfp' }" enctype="multipart/form-data">
                 <label class="pfp-selector" for="profilePicture">
-                    <div class="image">
-                        <img th:if="${profileUser.getImageId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
-                        <svg th:if="${profileUser.getImageId().isEmpty()}" viewBox="0 0 24 24">
-                            <use href="#profileIcon" />
-                        </svg>
-                    </div>
-                    <span>Edit image</span>
+                    <img th:if="${profileUser.getProfilePictureId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                    <svg th:if="${profileUser.getProfilePictureId().isEmpty()}" viewBox="0 0 24 24">
+                        <use href="#profileIcon" />
+                    </svg>
+                    <span>Upload new profile picture</span>
                 </label>
-                <input id="profilePicture" type="file" name="profilePicture" accept="image/png, image/jpeg" style="display: none">
+                <input id="profilePicture" type="file" name="profilePicture" accept="image/png, image/jpeg" style="display: none" onchange="this.form.submit()">
             </form>
-
+        </div>
+        <div class="settings-group">
             <form onsubmit="return confirm('Are you sure you want to update your profile?')" method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/details'}">
                 <label for="displayName">Display name</label>
                 <input id="displayName" type="text" name="displayName" th:value="${profileUser.getDisplayName()}">
@@ -45,9 +44,11 @@
 
         <h2>Security</h2>
         <div class="settings-group">
-            <form method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/password'}" onsubmit="return confirm('Are you sure you want to update your password?')">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password">
+            <form method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/password'}" onsubmit="return confirm('Are you sure you want to update your password? You will be logged out.')">
+                <label for="currentPassword">Current password</label>
+                <input id="currentPassword" type="password" name="currentPassword">
+                <label for="newPassword">New password</label>
+                <input id="newPassword" type="password" name="newPassword">
                 <button>Update password</button>
             </form>
         </div>

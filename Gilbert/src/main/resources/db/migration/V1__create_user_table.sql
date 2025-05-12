@@ -5,6 +5,7 @@ CREATE TABLE users
     username             VARCHAR(32)  NOT NULL UNIQUE,
     email                VARCHAR(128) NOT NULL UNIQUE,
     password             VARCHAR(256) NOT NULL,
+    profile_picture_id   VARCHAR(64)  NULL,
     terms_agreement_date DATETIME     NULL,
     role                 VARCHAR(32)  NOT NULL DEFAULT 'user',
     created_date         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP

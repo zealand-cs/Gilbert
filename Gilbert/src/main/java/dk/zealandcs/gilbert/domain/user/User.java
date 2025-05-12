@@ -17,7 +17,7 @@ public class User {
     private String username;
     private String email;
     private String passwordHash;
-    private Optional<String> imageId;
+    private String profilePictureId;
     private UserRole role;
     private Date termsAcceptedDate;
 
@@ -26,17 +26,17 @@ public class User {
         this.username = username;
         this.email = email;
         this.passwordHash = password;
-        this.imageId = Optional.empty();
+        this.profilePictureId = null;
         this.role = UserRole.User;
         this.termsAcceptedDate = termsAcceptedDate;
     }
 
-    public User(String displayName, String username, String email, String password, String imageId, Date termsAcceptedDate) {
+    public User(String displayName, String username, String email, String password, String profilePictureId, Date termsAcceptedDate) {
         this.displayName = displayName;
         this.username = username;
         this.email = email;
         this.passwordHash = password;
-        this.imageId = Optional.of(imageId);
+        this.profilePictureId = profilePictureId;
         this.role = UserRole.User;
         this.termsAcceptedDate = termsAcceptedDate;
     }
@@ -83,8 +83,21 @@ public class User {
         this.email = email;
     }
 
+    /**
+     * Sets a password hash directly, with no modifications
+     * @param passwordHash the hash
+     */
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    /**
+     * Hashes the password and sets it.
+     * @param password the password
+     */
+    public void setPassword(String password) {
+        var passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+        setPasswordHash(passwordHash);
     }
 
     public void hashPassword() {
@@ -124,11 +137,11 @@ public class User {
         return RandomStringUtils.random(length, 0, 10, false, true, new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', }, new Random());
     }
 
-    public Optional<String> getImageId() {
-        return imageId;
+    public Optional<String> getProfilePictureId() {
+        return Optional.ofNullable(profilePictureId);
     }
 
-    public void setImageId(Optional<String> imageId) {
-        this.imageId = imageId;
+    public void setProfilePictureId(String profilePictureId) {
+        this.profilePictureId = profilePictureId;
     }
 }

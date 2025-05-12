@@ -22,8 +22,8 @@
         </div>
         <div class="profile-header">
             <div class="profile-picture">
-                <img th:if="${profileUser.getImageId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
-                <svg th:if="${profileUser.getImageId().isEmpty()}" viewBox="0 0 24 24">
+                <img th:if="${profileUser.getProfilePictureId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                <svg th:if="${profileUser.getProfilePictureId().isEmpty()}" viewBox="0 0 24 24">
                     <use href="#profileIcon" />
                 </svg>
             </div>
