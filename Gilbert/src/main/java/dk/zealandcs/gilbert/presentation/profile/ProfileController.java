@@ -1,6 +1,5 @@
 package dk.zealandcs.gilbert.presentation.profile;
 
-import dk.zealandcs.gilbert.application.user.IUserService;
 import dk.zealandcs.gilbert.domain.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,11 +22,7 @@ public class ProfileController {
     public String profileForward(@PathVariable String path, HttpSession session) {
         var user = Optional.ofNullable((User) session.getAttribute("currentUser"));
 
-        if (user.isEmpty()) {
-            return "redirect:/auth";
-        }
-
-        return "forward:/profile/@" + user.get().getUsername() + path;
+        return user.map(value -> "forward:/profile/@" + value.getUsername() + path).orElse("redirect:/auth");
     }
 
     @GetMapping("/@{username}")
@@ -64,5 +59,15 @@ public class ProfileController {
     @GetMapping("/@{username}/help")
     public String helpPage(@PathVariable String username, HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
         return "forward:/profile/@" + username;
+    }
+
+    @GetMapping("/@{username}/settings")
+    public String settingsPage(@PathVariable String username, HttpSession session, Model model) {
+        return "/profile/settings/index";
+    }
+
+    @GetMapping("/@{username}/settings/account")
+    public String accountSettingsPage(@PathVariable String username, HttpSession session, Model model) {
+        return "/profile/settings/account";
     }
 }

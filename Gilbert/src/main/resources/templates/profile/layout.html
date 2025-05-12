@@ -22,7 +22,10 @@
         </div>
         <div class="profile-header">
             <div class="profile-picture">
-                <img th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                <img th:if="${profileUser.getImageId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                <svg th:if="${profileUser.getImageId().isEmpty()}" viewBox="0 0 24 24">
+                    <use href="#profileIcon" />
+                </svg>
             </div>
             <div class="profile-public-info">
                 <h2 class="profile-display-name" th:text="${profileUser.getDisplayName()}"></h2>

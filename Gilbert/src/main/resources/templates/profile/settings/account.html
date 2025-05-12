@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/profile/settings/layout}">
+<head>
+    <title th:text="#{profile.title}"></title>
+</head>
+<body>
+<section layout:fragment="settings-content">
+    <nav class="settings-nav">
+        <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/settings'}">
+            <svg viewBox="0 0 1024 1024">
+                <use href="#backIcon"/>
+            </svg>
+            Back
+        </a>
+    </nav>
+    <div class="settings-column">
+        <h2>Account information</h2>
+        <div class="settings-group">
+            <form>
+                <label class="pfp-selector" for="profilePicture">
+                    <div class="image">
+                        <img th:if="${profileUser.getImageId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                        <svg th:if="${profileUser.getImageId().isEmpty()}" viewBox="0 0 24 24">
+                            <use href="#profileIcon" />
+                        </svg>
+                    </div>
+                    <span>Edit image</span>
+                </label>
+                <input id="profilePicture" type="file" name="profilePicture" accept="image/png, image/jpeg" style="display: none">
+            </form>
+
+            <form onsubmit="return confirm('Are you sure you want to update your profile?')" method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/details'}">
+                <label for="displayName">Display name</label>
+                <input id="displayName" type="text" name="displayName" th:value="${profileUser.getDisplayName()}">
+
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" th:value="${profileUser.getUsername()}">
+
+                <div class="button-group">
+                    <button type="submit">Save</button>
+                    <button type="reset">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <h2>Security</h2>
+        <div class="settings-group">
+            <form method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/password'}" onsubmit="return confirm('Are you sure you want to update your password?')">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password">
+                <button>Update password</button>
+            </form>
+        </div>
+
+        <h2>Account administration</h2>
+        <div class="settings-group">
+            <form onsubmit="return confirm('Are you sure you want to delete your profile?')" method="post" th:action="@{'/profile/@' + ${profileUser.getUsername()} + '/settings/account/delete'}">
+                <button>Delete account</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

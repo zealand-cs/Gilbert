@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/profile/settings/layout}">
+<head>
+    <title th:text="#{profile.title}"></title>
+</head>
+<body>
+<section layout:fragment="settings-content">
+    <nav class="settings-nav">
+        <a th:href="@{'/profile/@' + ${profileUser.getUsername()}}">
+            <svg viewBox="0 0 1024 1024">
+                <use href="#backIcon"/>
+            </svg>
+            Back
+        </a>
+    </nav>
+    <div class="settings-column">
+        <h2>General</h2>
+        <div class="settings-category-group">
+            <a class="setting-category" href="/profile/me/settings/account">
+                <svg viewBox="0 0 24 24">
+                    <use href="#profileIcon"/>
+                </svg>
+                <span>Account</span>
+            </a>
+        </div>
+
+        <h2>Other</h2>
+        <div class="settings-category-group">
+            <a class="setting-category" href="/auth/logout">
+                <svg viewBox="0 0 24 24">
+                    <use href="#logoutIcon"/>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+</section>
+</body>
+</html>

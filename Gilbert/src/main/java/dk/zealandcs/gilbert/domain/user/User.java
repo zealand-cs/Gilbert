@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Random;
 
 public class User {
@@ -16,15 +17,26 @@ public class User {
     private String username;
     private String email;
     private String passwordHash;
+    private Optional<String> imageId;
     private UserRole role;
     private Date termsAcceptedDate;
 
-    // Any password passed here is hashed for increased security.
     public User(String displayName, String username, String email, String password, Date termsAcceptedDate) {
         this.displayName = displayName;
         this.username = username;
         this.email = email;
         this.passwordHash = password;
+        this.imageId = Optional.empty();
+        this.role = UserRole.User;
+        this.termsAcceptedDate = termsAcceptedDate;
+    }
+
+    public User(String displayName, String username, String email, String password, String imageId, Date termsAcceptedDate) {
+        this.displayName = displayName;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = password;
+        this.imageId = Optional.of(imageId);
         this.role = UserRole.User;
         this.termsAcceptedDate = termsAcceptedDate;
     }
@@ -110,5 +122,13 @@ public class User {
     }
     public static String generateUsernameSuffix(int length) {
         return RandomStringUtils.random(length, 0, 10, false, true, new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', }, new Random());
+    }
+
+    public Optional<String> getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Optional<String> imageId) {
+        this.imageId = imageId;
     }
 }
