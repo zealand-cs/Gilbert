@@ -107,8 +107,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean updateUser(User executingUser, User targetUser) {
-        return false;
+    public boolean updateUser(User user) {
+        try {
+            DisplayNameValidator.isValid(user.getDisplayName());
+        } catch (InvalidDisplayNameException e) {
+            throw new NotImplementedException();
+        }
+
+        userRepository.update(user);
+        return true;
     }
 
     @Override

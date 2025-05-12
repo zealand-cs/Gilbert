@@ -89,6 +89,24 @@ public class ProfileController {
         return "/profile/settings/account";
     }
 
+    @PostMapping("/@{username}/settings/account/details")
+    public String updateDetails(@RequestParam String displayName, @RequestParam String username, HttpServletRequest request, HttpSession session) {
+        var currentUser = Optional.ofNullable((User) session.getAttribute("currentUser"));
+        var profileUser = (User) request.getAttribute("profileUser");
+        boolean self = (boolean) request.getAttribute("self");
+
+        if (currentUser.isEmpty() || (!self && !currentUser.get().getRole().isAtLeast(UserRole.Employee))) {
+            // Not allowed or not logged in.
+            return "redirect:/";
+        }
+
+        profileUser.setDisplayName(displayName);
+        profileUser.setUsername(username);
+        userService.updateUser(profileUser);
+
+        return "redirect:/profile/@" + profileUser.getUsername() + "/settings/account";
+    }
+
     @PostMapping("/@{username}/settings/account/pfp")
     public String updateProfilePicture(@RequestParam MultipartFile profilePicture, HttpServletRequest request, HttpSession session) {
         var currentUser = Optional.ofNullable((User) session.getAttribute("currentUser"));

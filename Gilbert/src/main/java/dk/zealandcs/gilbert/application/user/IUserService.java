@@ -21,7 +21,7 @@ public interface IUserService {
     boolean updateProfilePicture(User targetUser, MultipartFile image);
     String getProfilePictureUrl(String pfpId);
 
-    boolean updateUser(User executingUser, User targetUser);
+    boolean updateUser(User user);
     boolean updatePassword(User targetUser, String currentPassword, String newPassword);
     boolean updateRole(User executingUser, User targetUser, UserRole role);
 }
