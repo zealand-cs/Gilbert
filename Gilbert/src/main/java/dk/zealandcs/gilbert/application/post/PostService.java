@@ -1,7 +1,9 @@
 package dk.zealandcs.gilbert.application.post;
 
 
+import dk.zealandcs.gilbert.domain.post.Brand;
 import dk.zealandcs.gilbert.domain.post.Post;
+import dk.zealandcs.gilbert.domain.post.ProductType;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.infrastruture.post.IPostRepository;
 import org.slf4j.Logger;
@@ -57,5 +59,15 @@ public class PostService implements IPostService {
     @Override
     public boolean deletePost(User executingUser, Post post) {
         return false;
+    }
+
+    @Override
+    public List<Brand> getAllBrands() {
+        return postRepository.getAllBrands();
+    }
+
+    @Override
+    public List<ProductType> getAllProductTypes() {
+        return postRepository.getAllProductTypes();
     }
 }

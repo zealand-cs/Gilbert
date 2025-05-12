@@ -2,27 +2,28 @@ package dk.zealandcs.gilbert.domain.post;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Post {
 
     private int id;
     private int ownerId;
     private String name;
-    private String brand;
-    private String typeOfClothing;
+    private Brand brand;
+    private ProductType typeOfClothing;
     private String description;
     private double price;
     private Condition condition;
     private String size;
     private String location;
-    private PostStatus status;
+    private PostStatus status = PostStatus.PendingApproval;
     private String imageId;
-    private LocalDate datePostedAt;
+    private Date datePostedAt;
 
     public Post() {
     }
 
-    public Post(int id, int ownerId, String name, String brand, String typeOfClothing, String description, double price, Condition condition, String size, String location, PostStatus status, String imageId, LocalDate datePostedAt) {
+    public Post(int id, int ownerId, String name, Brand brand, ProductType typeOfClothing, String description, double price, Condition condition, String size, String location, PostStatus status, String imageId, Date datePostedAt) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -62,19 +63,19 @@ public class Post {
         this.name = name;
     }
 
-    public String getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
-    public String getTypeOfClothing() {
+    public ProductType getTypeOfClothing() {
         return typeOfClothing;
     }
 
-    public void setTypeOfClothing(String typeOfClothing) {
+    public void setTypeOfClothing(ProductType typeOfClothing) {
         this.typeOfClothing = typeOfClothing;
     }
 
@@ -134,11 +135,11 @@ public class Post {
         this.imageId = imageId;
     }
 
-    public LocalDate getDatePostedAt() {
+    public Date getDatePostedAt() {
         return datePostedAt;
     }
 
-    public void setDatePostedAt(LocalDate datePostedAt) {
+    public void setDatePostedAt(Date datePostedAt) {
         this.datePostedAt = datePostedAt;
     }
 }

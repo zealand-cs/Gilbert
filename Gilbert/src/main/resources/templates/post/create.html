@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <link rel="stylesheet" href="/main.css"/>
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #e94560;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #d63d57;
+        }
+
+        .error-message {
+            color: #e94560;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="margin: 0;">Create New Post</h1>
+    </div>
+
+    <form th:action="@{/posts}" method="post">
+        <div class="form-group">
+            <label for="name">Item Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price (€)</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="condition">Condition</label>
+            <select id="condition" name="condition" required>
+                <option value="" disabled selected>Choose condition</option>
+                <option th:each="condition : ${conditions}"
+                        th:value="${condition}"
+                        th:text="${condition}">Condition</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="size">Size</label>
+            <input type="text" id="size" name="size" required>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <select id="brand" name="brand.id" required>
+                <option value="" disabled selected>Choose brand</option>
+                <option th:each="brand : ${brands}"
+                        th:value="${brand.id}"
+                        th:text="${brand.name}">Brand Name</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="typeOfClothing">Type of Clothing</label>
+            <select id="typeOfClothing" name="typeOfClothing.id" required>
+                <option value="" disabled selected>Choose type</option>
+                <option th:each="type : ${types}"
+                        th:value="${type.id}"
+                        th:text="${type.name}">Clothing Type</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+
+        <button type="submit" class="submit-button">Create Post</button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

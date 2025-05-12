@@ -1,5 +1,8 @@
 package dk.zealandcs.gilbert.application.post;
 
+import com.stripe.model.Product;
+import dk.zealandcs.gilbert.domain.post.Brand;
+import dk.zealandcs.gilbert.domain.post.ProductType;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.post.Post;
 
@@ -14,4 +17,6 @@ public interface IPostService{
     Optional<Post> createPost(Post post);
     boolean editPost(User executingUser, Post post);
     boolean deletePost(User executingUser, Post post);
+    List<Brand> getAllBrands();
+    List<ProductType> getAllProductTypes();
 }

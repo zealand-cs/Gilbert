@@ -1,9 +1,7 @@
 package dk.zealandcs.gilbert.infrastruture.post;
 
 import dk.zealandcs.gilbert.config.DatabaseConfig;
-import dk.zealandcs.gilbert.domain.post.Condition;
-import dk.zealandcs.gilbert.domain.post.Post;
-import dk.zealandcs.gilbert.domain.post.PostStatus;
+import dk.zealandcs.gilbert.domain.post.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +29,8 @@ public class PostRepository implements IPostRepository {
      */
     @Override
     public Post write(Post post) {
-        String sql = "INSERT INTO posts(ownerId, name, description, price, condition, size, location, status, " +
-                     "image_id, brands_id, product_type_id) VALUES (?. ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO posts(owner_id, name, description, price, item_condition, size, location," +
+                " status, image_id, brands_id, product_type_id, date_posted_at\n) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -45,11 +43,17 @@ public class PostRepository implements IPostRepository {
             stmt.setString(6, post.getSize());
             stmt.setString(7, post.getLocation());
             stmt.setString(8, post.getStatus().name());
-            stmt.setString(9, post.getImageId());
-            stmt.setInt(10, Integer.parseInt(post.getBrand()));
-            stmt.setInt(11, Integer.parseInt(post.getTypeOfClothing()));
+            stmt.setString(9, post.getImageId() != null ? post.getImageId() : "default");
+            stmt.setInt(10, post.getBrand().getId());
+            stmt.setInt(11, post.getTypeOfClothing().getId());
 
+            stmt.setTimestamp(12, new Timestamp(post.getDatePostedAt().getTime()));
 
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new PostWriteException("Failed to create post, no rows affected");
+            }
             try (ResultSet keys = stmt.getGeneratedKeys()) {
                 if (keys.next()) {
                     post.setId(keys.getInt(1));
@@ -68,7 +72,7 @@ public class PostRepository implements IPostRepository {
      * Finds a given post by the posts id
      */
     public Optional<Post> findById(int id) {
-        String sql = "SELECT id, ownerId, name, description, price, condition, size, location, status, imageId, brand, typeOfClothing FROM Posts WHERE id = ?";
+        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts WHERE id = ?";
         try (Connection conn = databaseConfig.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);) {
             logger.info("Getting post by id {}: " + id);
@@ -91,7 +95,7 @@ public class PostRepository implements IPostRepository {
      * Finds all posts by a given ownerId
      */
     public List<Post> findByOwnerId(int ownerId) {
-        String sql = "SELECT id, ownerId, name, description, price, condition, size, location, status, imageId, brand, typeOfClothing FROM Posts WHERE ownerId = ?";
+        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts WHERE ownerId = ?";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting post by ownerId {}: ", ownerId);
@@ -116,7 +120,7 @@ public class PostRepository implements IPostRepository {
      * Finds all posts, no matter owner
      */
     public List<Post> findAll() {
-        String sql = "SELECT id, ownerId, name, description, price, condition, size, location, status, imageId, brand, typeOfClothing FROM Posts";
+        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts";
         try (Connection conn = databaseConfig.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting all posts");
@@ -142,6 +146,50 @@ public class PostRepository implements IPostRepository {
 
     public void delete(int id) {}
 
+
+    public List<Brand> getAllBrands() {
+        String sql = "SELECT id, name from brands";
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            logger.info("Getting all brands");
+
+
+            var rs = stmt.executeQuery();
+            var brands = new ArrayList<Brand>();
+            while (rs.next()) {
+                var brand = brandFromResultSet(rs);
+                brand.ifPresent(brands::add);
+            }
+            logger.info("Found {} brands", brands.size());
+            return brands;
+        } catch (SQLException e) {
+            logger.error("SQL Exception error getting brands", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<ProductType> getAllProductTypes() {
+        String sql = "SELECT id, name FROM product_types";
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            logger.info("Getting all product types");
+
+            var rs = stmt.executeQuery();
+            var productTypes = new ArrayList<ProductType>();
+            while (rs.next()) {
+                var productType = productTypeFromResultSet(rs);
+                productType.ifPresent(productTypes::add);
+            }
+            logger.info("Found {} product types", productTypes.size());
+            return productTypes;
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception error getting product types", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
     /**
      * Creates a Postobject from the given resultset
      */
@@ -156,12 +204,23 @@ public class PostRepository implements IPostRepository {
             post.setCondition(Condition.valueOf(rs.getString("condition")));
             post.setSize(rs.getString("size"));
             post.setLocation(rs.getString("location"));
-            post.setStatus(PostStatus.valueOf(rs.getString("status")));
             post.setImageId(rs.getString("image_id"));
-            post.setBrand(String.valueOf(rs.getInt("brands_id")));
-            post.setTypeOfClothing(String.valueOf(rs.getInt("product_type_id")));
-            post.setDatePostedAt(rs.getDate("date_posted_at").toLocalDate());
+            post.setDatePostedAt(rs.getDate("date_posted_at"));
 
+            String statusStr = rs.getString("status");
+            if (statusStr != null) {
+                post.setStatus(PostStatus.valueOf(statusStr));
+            }
+
+            Brand brand = new Brand();
+            brand.setId(rs.getInt("brand_id"));
+            brand.setName(rs.getString("brand_name"));
+            post.setBrand(brand);
+
+            ProductType type = new ProductType();
+            type.setId(rs.getInt("product_type_id"));
+            type.setName(rs.getString("product_type_name"));
+            post.setTypeOfClothing(type);
 
             return Optional.of(post);
 
@@ -170,5 +229,21 @@ public class PostRepository implements IPostRepository {
             return Optional.empty();
         }
     }
+
+    private Optional<Brand> brandFromResultSet(ResultSet rs) throws SQLException {
+        return Optional.of(new Brand(
+                rs.getString("name"),
+                rs.getInt("id")
+        ));
+    }
+
+    private Optional<ProductType> productTypeFromResultSet(ResultSet rs) throws SQLException {
+        return Optional.of(new ProductType(
+                rs.getString("name"),
+                rs.getInt("id")
+        ));
+    }
+
+
 
 }

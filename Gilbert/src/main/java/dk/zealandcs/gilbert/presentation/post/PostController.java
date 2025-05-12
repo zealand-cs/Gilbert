@@ -1,5 +1,6 @@
 package dk.zealandcs.gilbert.presentation.post;
 
+import dk.zealandcs.gilbert.domain.post.Condition;
 import org.springframework.ui.Model;
 import dk.zealandcs.gilbert.application.post.IPostService;
 import dk.zealandcs.gilbert.domain.post.Post;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,11 @@ public class PostController {
 
         post.setOwnerId(currentUser.get().getId());
 
+        if (post.getImageId() == null || post.getImageId().isBlank()) {
+            post.setImageId("default");
+        }
+        post.setDatePostedAt(new Date());
+
         var newPost = postService.createPost(post);
             if (newPost.isEmpty()) {
                 logger.error("Failed to create new post");
@@ -52,10 +59,13 @@ public class PostController {
         var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
         if (currentUser.isEmpty()) {
             logger.warn("Redirecting user to login page");
-            return "redirect:/login";
+            return "redirect:/auth";
         }
 
-        return "posts/createpost";
+        model.addAttribute("brands", postService.getAllBrands());
+        model.addAttribute("types", postService.getAllProductTypes());
+        model.addAttribute("conditions", Condition.values());
+        return "post/create";
     }
 
     @GetMapping

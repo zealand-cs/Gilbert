@@ -16,5 +16,8 @@ public enum PostStatus {
     public boolean isAtLeast(PostStatus postStatus) {return this.status >= postStatus.status;
     }
 
+    public static PostStatus getDefault() {
+        return PendingApproval;
+    }
 
 }

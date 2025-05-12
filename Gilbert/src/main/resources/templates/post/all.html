@@ -5,7 +5,8 @@
     <title>Current Sales</title>
     <th:block th:replace="~{fragments/header :: header}"></th:block>
     <link rel="stylesheet" href="/main.css"/>
-    <style>
+
+        <style>
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -103,7 +104,7 @@
             text-align: center;
             padding: 40px;
             grid-column: 1 / -1;
-            background-color: white;
+            background-color: black;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -115,9 +116,22 @@
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container">
-    <h1>Browse Items</h1>
 
-    <div class="posts-grid">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1 style="margin: 0;">Browse Items</h1>
+            <a href="/posts/createpost" class="create-post-button" style="
+            padding: 10px 20px;
+            background-color: #e94560;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;">
+                Create Post
+            </a>
+        </div>
+
+        <div class="posts-grid">
 
         <div th:if="${#lists.isEmpty(posts)}" class="no-posts">
             <p>No items are available at the moment.</p>
