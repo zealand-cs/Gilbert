@@ -6,6 +6,20 @@
 <body>
 <section layout:fragment="content">
     <div class="profile-column">
+        <div class="navigation">
+            <nav th:if="${self}">
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/notifications'}">
+                    <svg viewBox="0 0 24 24">
+                        <use href="#notificationsIcon" />
+                    </svg>
+                </a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/settings'}">
+                    <svg viewBox="0 0 24 24">
+                        <use href="#profileIcon" />
+                    </svg>
+                </a>
+            </nav>
+        </div>
         <div class="profile-header">
             <div class="profile-picture">
                 <img th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
