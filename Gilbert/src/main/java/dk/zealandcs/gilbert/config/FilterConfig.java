@@ -13,7 +13,7 @@ public class FilterConfig {
         FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new AuthFilter());
-        registrationBean.addUrlPatterns("/me/*");
+        registrationBean.addUrlPatterns("/profile/me/*");
 
         return registrationBean;
     }
