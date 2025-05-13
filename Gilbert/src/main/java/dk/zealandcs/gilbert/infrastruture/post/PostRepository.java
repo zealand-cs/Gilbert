@@ -103,7 +103,7 @@ public class PostRepository implements IPostRepository {
      * Finds all posts by a given ownerId
      */
     public List<Post> findByOwnerId(int ownerId) {
-        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM Posts WHERE ownerId = ?";
+        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM posts WHERE owner_id = ?";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting post by ownerId {}: ", ownerId);

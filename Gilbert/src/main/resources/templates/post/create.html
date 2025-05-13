@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
 <head>
     <meta charset="UTF-8">
     <title>Create Post</title>
@@ -63,8 +63,7 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/navigation :: navigation}"></div>
-
+<section layout:fragment="content">
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h1 style="margin: 0;">Create New Post</h1>
@@ -138,6 +137,6 @@
     </form>
 </div>
 <div style="height: 150px;"></div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+</section>
 </body>
 </html>

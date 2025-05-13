@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
 <head>
     <meta charset="UTF-8">
     <title>Post Details</title>
-    <th:block th:replace="~{fragments/header :: header}"></th:block>
     <link rel="stylesheet" href="/main.css"/>
     <style>
         .container {
@@ -137,8 +136,8 @@
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/navigation :: navigation}"></div>
 
+<section layout:fragment="content">
 <div class="container">
     <div class="post-details">
         <h1 th:text="${post.name}">Post Name</h1>
@@ -180,7 +179,7 @@
         </div>
     </div>
 </div>
+</section>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
