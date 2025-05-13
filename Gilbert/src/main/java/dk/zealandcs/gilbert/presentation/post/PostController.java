@@ -56,7 +56,7 @@ public class PostController {
         var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
         if (currentUser.isEmpty()) {
             logger.warn("Redirecting user to login page");
-            return "redirect:/auth";
+            return "redirect:/auth?redirect=/posts/createpost";
         }
 
         model.addAttribute("brands", postService.getAllBrands());
