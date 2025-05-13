@@ -98,7 +98,7 @@ public class PostController {
             return "redirect:/posts";
         }
         logger.warn("User {} is not allowed to delete post {}", currentUser.get().getUsername(), post.get().getName());
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to delete post");
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User is not allowed to delete post");
     }
 
 

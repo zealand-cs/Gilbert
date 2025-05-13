@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
 <head>
     <meta charset="UTF-8">
     <title>Current Sales</title>
@@ -119,10 +119,8 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/navigation :: navigation}"></div>
-
+<section layout:fragment="content">
 <div class="container">
-
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h1 style="margin: 0;">Browse Items</h1>
             <a href="/posts/createpost" class="create-post-button" style="
@@ -179,8 +177,6 @@
         </div>
     </div>
 </div>
-
-
-<div th:replace="~{fragments/footer :: footer}"></div>
+</section>
 </body>
 </html>
