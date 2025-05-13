@@ -49,6 +49,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease;
+            text-decoration: none;
         }
 
         .post-card:hover {
@@ -142,39 +143,33 @@
         </div>
 
 
-        <div th:each="post : ${posts}" class="post-card">
+        <th:block th:each="post : ${posts}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" class="post-card">
 
-            <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
-                 th:src="@{/images/{id}(id=${post.imageId})}"
-                 alt="Product Image"
-                 class="post-image">
+                <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
+                     th:src="@{/images/{id}(id=${post.imageId})}"
+                     alt="Product Image"
+                     class="post-image">
 
-            <img th:if="${post.imageId == null || post.imageId.isEmpty()}"
-                 src="https://via.placeholder.com/300x200"
-                 alt="No Image Available"
-                 class="post-image">
+                <img th:if="${post.imageId == null || post.imageId.isEmpty()}"
+                     src="https://via.placeholder.com/300x200"
+                     alt="No Image Available"
+                     class="post-image">
 
-            <div class="post-info">
-                <h3 class="post-name" th:text="${post.name}">Post Name</h3>
-                <div class="post-details">
-                    <span th:text="${post.brand != null ? post.brand.name : 'No Brand'}">Brand</span>
-                    <span class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</span>
-                </div>
-                <p class="post-seller">Seller: <span class="seller-name" th:text="${post.ownerDisplayName}">Owner ID</span></p>
-                <div class="post-details">
-                    <span th:text="${post.size}">Size</span>
-                    <span class="post-condition" th:text="${post.condition}">Condition</span>
-                </div>
-            </div>
-
-
-
-            <a th:href="@{/posts/{id}(id=${post.id})}" style="text-decoration: none; color: inherit;">
-                <div style="text-align: center; padding: 10px; background-color: #f8f8f8; border-top: 1px solid #eee;">
-                    View Details
+                <div class="post-info">
+                    <h3 class="post-name" th:text="${post.name}">Post Name</h3>
+                    <div class="post-details">
+                        <span th:text="${post.brand != null ? post.brand.name : 'No Brand'}">Brand</span>
+                        <span class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</span>
+                    </div>
+                    <p class="post-seller">Seller: <span class="seller-name" th:text="${post.ownerDisplayName}">Owner ID</span></p>
+                    <div class="post-details">
+                        <span th:text="${post.size}">Size</span>
+                        <span class="post-condition" th:text="${post.condition}">Condition</span>
+                    </div>
                 </div>
             </a>
-        </div>
+        </th:block>
     </div>
 </div>
 </section>
