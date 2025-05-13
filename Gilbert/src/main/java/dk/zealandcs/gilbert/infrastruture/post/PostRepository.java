@@ -225,6 +225,7 @@ public class PostRepository implements IPostRepository {
             Post post = new Post();
             post.setId(rs.getInt("id"));
             post.setOwnerDisplayName(rs.getString("owner_display_name"));
+            post.setOwnerId(rs.getInt("owner_id"));
             post.setName(rs.getString("name"));
             post.setDescription(rs.getString("description"));
             post.setPrice(rs.getDouble("price"));
