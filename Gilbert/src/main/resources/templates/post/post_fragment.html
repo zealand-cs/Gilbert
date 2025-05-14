@@ -3,15 +3,14 @@
 <body>
 <a th:fragment="post" th:href="@{/posts/{id}(id=${post.id})}" class="post-card">
     <div class="post-image">
-        <img th:if="${post.imageId != null && !post.imageId.isEmpty()}"
+        <img th:if="${post.getImageId().isPresent()}"
              th:src="@{/images/{id}(id=${post.imageId})}"
              alt="Product Image"
-             class="post-image">
+        >
 
-        <img th:if="${post.imageId == null || post.imageId.isEmpty()}"
-             src="https://via.placeholder.com/300x200"
-             alt="No Image Available"
-             class="post-image">
+        <svg th:if="${post.getImageId().isEmpty()}" viewBox="0 0 24 24">
+            <use href="#missingIcon"/>
+        </svg>
     </div>
 
     <div class="post-info">
@@ -25,11 +24,6 @@
             <span th:text="${post.size}">Size</span>
             <span class="post-condition" th:text="${post.condition}">Condition</span>
         </div>
-        <button class="favorite-button" th:hx-post="@{'/profile/me/favorites/' + ${post.getId()}}">
-            <svg viewBox="0 0 24 24">
-                <use href="#favoriteOutlined"/>
-            </svg>
-        </button>
     </div>
 </a>
 </body>

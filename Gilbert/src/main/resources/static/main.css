@@ -415,6 +415,7 @@ input {
     overflow: hidden;
     transition: transform 0.3s ease;
     text-decoration: none;
+    color: var(--text);
 
     & .favorite-button {
         position: absolute;
@@ -448,6 +449,13 @@ input {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            padding: 1.6rem;
         }
     }
 
