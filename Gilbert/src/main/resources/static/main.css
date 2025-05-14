@@ -112,6 +112,12 @@ input {
         height: 100%;
         aspect-ratio: 1;
     }
+
+    & a img {
+        height: 110%;
+        aspect-ratio: 1;
+        border-radius: 500px;
+    }
 }
 
 .auth-body {
