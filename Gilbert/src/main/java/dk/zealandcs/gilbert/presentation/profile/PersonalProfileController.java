@@ -33,10 +33,17 @@ public class PersonalProfileController {
             return "redirect:/";
         }
 
-        model.addAttribute("profileUser", currentUser.get());
-        model.addAttribute("self", true);
+        return "forward:/profile/@" + currentUser.get().getUsername() + "/posts";
+    }
 
-        return "profile/posts";
+    @GetMapping("/favorites")
+    public String favorite(HttpSession session, Model model) {
+        var currentUser = Optional.ofNullable((User) session.getAttribute("currentUser"));
+        if (currentUser.isEmpty()) {
+            return "redirect:/";
+        }
+
+        return "forward:/profile/@" + currentUser.get().getUsername() + "/favorites";
     }
 
     @GetMapping("/settings")
@@ -126,5 +133,29 @@ public class PersonalProfileController {
         }
 
         return "redirect:/profile/me/settings/account";
+    }
+
+    @PostMapping("/favorites/{postId}")
+    public String addFavorite(@PathVariable int postId, HttpSession session) {
+        var currentUser = Optional.ofNullable((User) session.getAttribute("currentUser"));
+        if (currentUser.isEmpty()) {
+            // Not allowed or not logged in.
+            return "redirect:/";
+        }
+
+        userService.addFavorite(currentUser.get(), postId);
+        return "redirect:/posts/" + postId;
+    }
+
+    @PostMapping("/favorites/{postId}/delete")
+    public String deleteFavorite(@PathVariable int postId, HttpSession session) {
+        var currentUser = Optional.ofNullable((User) session.getAttribute("currentUser"));
+        if (currentUser.isEmpty()) {
+            // Not allowed or not logged in.
+            return "redirect:/";
+        }
+
+        userService.removeFavorite(currentUser.get(), postId);
+        return "redirect:/posts/" + postId;
     }
 }

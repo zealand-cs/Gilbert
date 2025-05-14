@@ -25,7 +25,6 @@ public class PostRepository implements IPostRepository {
 
     /**
      * Writes a new post to the database from given paramaters.
-     *
      */
     @Override
     public Post write(Post post) {
@@ -73,21 +72,21 @@ public class PostRepository implements IPostRepository {
      */
     public Optional<Post> findById(int id) {
         String sql = """
-        SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
-        FROM posts p 
-        LEFT JOIN brands b ON p.brands_id = b.id 
-        LEFT JOIN product_types pt ON p.product_type_id = pt.id 
-        LEFT JOIN users u ON p.owner_id = u.id
-        WHERE p.id = ?
-        """;
+                SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
+                FROM posts p 
+                LEFT JOIN brands b ON p.brands_id = b.id 
+                LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+                LEFT JOIN users u ON p.owner_id = u.id
+                WHERE p.id = ?
+                """;
 
         try (Connection conn = databaseConfig.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql);) {
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
             logger.info("Getting post by id {}: " + id);
 
             stmt.setInt(1, id);
             var rs = stmt.executeQuery();
-            if (rs.next())  {
+            if (rs.next()) {
                 return postFromResultSet(rs);
             }
             logger.warn("No post found with id {}", id);
@@ -103,7 +102,14 @@ public class PostRepository implements IPostRepository {
      * Finds all posts by a given ownerId
      */
     public List<Post> findByOwnerId(int ownerId) {
-        String sql = "SELECT id, owner_id, name, description, price, item_condition, size, location, status, image_id, brands_id, product_type_id, date_posted_at FROM posts WHERE owner_id = ?";
+        String sql = """
+                SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
+                FROM posts p
+                LEFT JOIN brands b ON p.brands_id = b.id 
+                LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+                LEFT JOIN users u ON p.owner_id = u.id
+                WHERE p.owner_id = ?
+                """;
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting post by ownerId {}: ", ownerId);
@@ -129,16 +135,16 @@ public class PostRepository implements IPostRepository {
      */
     public List<Post> findAll() {
         String sql = """
-         SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name 
-         FROM posts p 
-         LEFT JOIN brands b ON p.brands_id = b.id 
-         LEFT JOIN product_types pt ON p.product_type_id = pt.id
-         LEFT JOIN users u ON p.owner_id = u.id
-    """;
+                     SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name 
+                     FROM posts p 
+                     LEFT JOIN brands b ON p.brands_id = b.id 
+                     LEFT JOIN product_types pt ON p.product_type_id = pt.id
+                     LEFT JOIN users u ON p.owner_id = u.id
+                """;
 
 
         try (Connection conn = databaseConfig.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting all posts");
 
             var rs = stmt.executeQuery();
@@ -163,7 +169,7 @@ public class PostRepository implements IPostRepository {
     public void delete(int id) {
         String sql = "DELETE FROM posts WHERE id = ?";
         try (Connection conn = databaseConfig.getConnection();
-        var stmt= conn.prepareStatement(sql)) {
+             var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
             logger.info("Deleted post with id {}", id);
@@ -212,6 +218,37 @@ public class PostRepository implements IPostRepository {
 
         } catch (SQLException e) {
             logger.error("SQL Exception error getting product types", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Post> getUserFavorites(int userId) {
+        String sql = """
+                SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
+                FROM posts p
+                LEFT JOIN brands b ON p.brands_id = b.id 
+                LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+                LEFT JOIN users u ON p.owner_id = u.id
+                LEFT JOIN user_favorites uf ON p.id = uf.post_id
+                WHERE uf.user_id = ?
+                """;
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            logger.info("Getting favorite posts by user id {}: ", userId);
+
+            stmt.setInt(1, userId);
+            var rs = stmt.executeQuery();
+            var posts = new ArrayList<Post>();
+            while (rs.next()) {
+                var post = postFromResultSet(rs);
+                post.ifPresent(posts::add);
+            }
+            logger.info("Found {} favorited posts for user", posts.size(), userId);
+            return posts;
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception error getting posts", e);
             throw new RuntimeException(e);
         }
     }
@@ -270,7 +307,6 @@ public class PostRepository implements IPostRepository {
                 rs.getInt("id")
         ));
     }
-
 
 
 }

@@ -8,6 +8,8 @@ import dk.zealandcs.gilbert.domain.validators.DisplayNameValidator;
 import dk.zealandcs.gilbert.domain.validators.EmailValidator;
 import dk.zealandcs.gilbert.domain.validators.PasswordValidator;
 import dk.zealandcs.gilbert.exceptions.*;
+import dk.zealandcs.gilbert.infrastruture.favorites.IFavoriteRepository;
+import dk.zealandcs.gilbert.infrastruture.post.IPostRepository;
 import dk.zealandcs.gilbert.infrastruture.storage.IStorageRepository;
 import dk.zealandcs.gilbert.infrastruture.user.IUserRepository;
 import org.apache.commons.lang3.NotImplementedException;
@@ -27,10 +29,14 @@ public class UserService implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final IUserRepository userRepository;
     private final IStorageRepository storageRepository;
+    private final IPostRepository postRepository;
+    private final IFavoriteRepository favoriteRepository;
 
-    UserService(IUserRepository userRepository, IStorageRepository storageRepository) {
+    UserService(IUserRepository userRepository, IStorageRepository storageRepository, IPostRepository postRepository, IFavoriteRepository favoriteRepository) {
         this.userRepository = userRepository;
         this.storageRepository = storageRepository;
+        this.postRepository = postRepository;
+        this.favoriteRepository = favoriteRepository;
     }
 
     @Override
@@ -166,7 +172,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<Post> getFavorites() {
-        return List.of();
+    public void addFavorite(User user, int post) {
+        favoriteRepository.insert(user, post);
+    }
+
+    @Override
+    public void removeFavorite(User user, int post) {
+        favoriteRepository.remove(user, post);
+    }
+
+    @Override
+    public List<Post> getFavorites(User user) {
+        return postRepository.getUserFavorites(user);
     }
 }

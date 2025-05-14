@@ -41,6 +41,7 @@
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/posts'}" th:text="#{profile.menu.postsLabel}"></a>
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/sales'}" th:text="#{profile.menu.salesLabel}"></a>
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/orders'}" th:text="#{profile.menu.ordersLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/favorites'}" th:text="#{profile.menu.favoritesLabel}"></a>
             </nav>
         </div>
         <div class="profile-page-content">

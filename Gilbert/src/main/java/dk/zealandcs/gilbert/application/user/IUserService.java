@@ -26,5 +26,7 @@ public interface IUserService {
     boolean updatePassword(User targetUser, String currentPassword, String newPassword);
     boolean updateRole(User executingUser, User targetUser, UserRole role);
 
-    List<Post> getFavorites();
+    void addFavorite(User user, int post);
+    void removeFavorite(User user, int post);
+    List<Post> getFavorites(User user);
 }

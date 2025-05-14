@@ -28,10 +28,6 @@ public interface IFavoriteRepository {
         remove(userId, post.getId());
     }
 
-    List<Post> getUserFavorites(int userId);
-    default List<Post> getUserFavorites(User user) {
-        return getUserFavorites(user.getId());
-    }
 
     int getNumberOfFavoritesByPost(int postId);
     default int getNumberOfFavoritesByPost(Post post) {

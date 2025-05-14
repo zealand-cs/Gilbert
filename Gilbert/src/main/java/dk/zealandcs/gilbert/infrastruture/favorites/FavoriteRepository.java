@@ -1,13 +1,11 @@
 package dk.zealandcs.gilbert.infrastruture.favorites;
 
 import dk.zealandcs.gilbert.config.DatabaseConfig;
-import dk.zealandcs.gilbert.domain.post.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.List;
 
 @Repository
 public class FavoriteRepository implements IFavoriteRepository {
@@ -52,11 +50,6 @@ public class FavoriteRepository implements IFavoriteRepository {
             logger.error("Error while trying to remove favorite (post {}) for user {}: {}", userId, postId, e.getMessage());
             // TODO: Throw correct error
         }
-    }
-
-    @Override
-    public List<Post> getUserFavorites(int userId) {
-        return List.of();
     }
 
     @Override
