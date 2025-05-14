@@ -45,7 +45,7 @@
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/help'}" th:text="#{profile.menu.helpLabel}"></a>
             </nav>
         </div>
-        <div>
+        <div class="profile-page-content">
             <section layout:fragment="profile-page-content"></section>
         </div>
     </div>

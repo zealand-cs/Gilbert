@@ -1,5 +1,6 @@
 package dk.zealandcs.gilbert.application.user;
 
+import dk.zealandcs.gilbert.domain.post.Post;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.RegisterUser;
 import dk.zealandcs.gilbert.domain.user.UserRole;
@@ -162,5 +163,10 @@ public class UserService implements IUserService {
     @Override
     public boolean updateRole(User executingUser, User targetUser, UserRole role) {
         return false;
+    }
+
+    @Override
+    public List<Post> getFavorites() {
+        return List.of();
     }
 }

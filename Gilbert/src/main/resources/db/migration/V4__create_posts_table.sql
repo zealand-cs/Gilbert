@@ -16,4 +16,11 @@ CREATE TABLE posts
     FOREIGN KEY (owner_id) REFERENCES users (id),
     FOREIGN KEY (brands_id) REFERENCES brands (id),
     FOREIGN KEY (product_type_id) REFERENCES product_types (id)
-)
+);
+
+CREATE TABLE post_assets
+(
+    post_id  INT         NOT NULL REFERENCES posts (id),
+    asset_id VARCHAR(64) NOT NULL,
+    PRIMARY KEY (post_id)
+);
