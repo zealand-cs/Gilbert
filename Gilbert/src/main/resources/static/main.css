@@ -17,6 +17,10 @@
     --text: var(--g-brown);
     --alternate-text: var(--g-beige);
 
+    --border-radius-s: 0.5rem;
+    --border-radius-m: 1rem;
+    --border-radius-l: 2rem;
+
     box-sizing: border-box;
 }
 
@@ -31,15 +35,18 @@ body {
 }
 
 button {
-    border-radius: 0;
+    border-radius: var(--border-radius-s);
     border: none;
     height: 2.5rem;
+    color: var(--alternate-text);
+    background-color: var(--secondary);
 }
 
 input {
-    border-radius: 0;
+    border-radius: var(--border-radius-l);
     border: none;
     height: 2rem;
+    padding-left: 0.7rem;
 }
 
 .icon {
@@ -126,7 +133,8 @@ input {
         padding: 3rem;
         margin: 1rem;
 
-        background-color: var(--secondary);
+        background-color: var(--surface);
+        border-radius: var(--border-radius-m);
     }
 
     & form {
@@ -286,7 +294,7 @@ input {
         flex-direction: column;
 
         background-color: var(--surface);
-        border-radius: 1rem;
+        border-radius: var(--border-radius-m);
 
         margin: 0 1rem 1rem 1rem;
 
@@ -308,7 +316,7 @@ input {
         padding: 1rem;
         text-decoration: none;
         color: var(--text);
-        border-radius: 1rem;
+        border-radius: var(--border-radius-m);
 
         & svg {
             width: 2rem;
@@ -326,7 +334,7 @@ input {
         padding: 1rem;
         text-decoration: none;
         color: var(--text);
-        border-radius: 1rem;
+        border-radius: var(--border-radius-m);
 
         & svg {
             width: 2rem;
