@@ -13,7 +13,7 @@
                         <use href="#notificationsIcon" />
                     </svg>
                 </a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/settings'}">
+                <a th:href="@{'/profile/me/settings'}">
                     <svg viewBox="0 0 24 24">
                         <use href="#profileIcon" />
                     </svg>
@@ -41,8 +41,6 @@
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/posts'}" th:text="#{profile.menu.postsLabel}"></a>
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/sales'}" th:text="#{profile.menu.salesLabel}"></a>
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/orders'}" th:text="#{profile.menu.ordersLabel}"></a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/info'}" th:text="#{profile.menu.infoLabel}"></a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/help'}" th:text="#{profile.menu.helpLabel}"></a>
             </nav>
         </div>
         <div class="profile-page-content">
