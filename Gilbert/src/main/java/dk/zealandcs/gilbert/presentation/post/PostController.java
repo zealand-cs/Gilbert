@@ -1,6 +1,7 @@
 package dk.zealandcs.gilbert.presentation.post;
 
 import dk.zealandcs.gilbert.domain.post.Condition;
+import dk.zealandcs.gilbert.domain.user.UserRole;
 import org.springframework.ui.Model;
 import dk.zealandcs.gilbert.application.post.IPostService;
 import dk.zealandcs.gilbert.domain.post.Post;
@@ -101,7 +102,65 @@ public class PostController {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User is not allowed to delete post");
     }
 
+    // Show page for edit post
+    @GetMapping("/{postId}/edit")
+    public String editPostPage(@PathVariable int postId, HttpSession session, Model model) {
+        var post = postService.getPost(postId);
+        if (post.isEmpty()) {
+            logger.warn("Post with ID not found", postId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post not found");
+        }
 
+        var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
+        if (currentUser.isPresent() && (currentUser.get().getId() == post.get().getOwnerId() || currentUser.get().getRole().isAtLeast(UserRole.Admin))) {
+            model.addAttribute("post", post.get());
+            logger.info("Editing post ID" + postId);
+
+            model.addAttribute("post", post.get());
+            model.addAttribute("brands", postService.getAllBrands());
+            model.addAttribute("types", postService.getAllProductTypes());
+            model.addAttribute("conditions", Condition.values());
+
+            return "post/edit";
+        } else {
+            logger.warn("User tried to edit post ID without permission");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "no access to edit post");
+        }
+    }
+    //Save edits for post
+    @PostMapping("/{postId}/edit")
+    public String updatePost(@PathVariable int postId, @ModelAttribute Post post, HttpSession session, Model model) {
+        var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
+        if (currentUser.isEmpty()) {
+            logger.warn("Unauthorized access to update post ID");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+
+        var postCheck = postService.getPost(postId);
+        if (postCheck.isEmpty()) {
+            logger.warn("Post with ID not found", postId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post not found");
+        }
+        Post existingPost = postCheck.get();
+        post.setId(postId);
+        post.setOwnerId(postCheck.get().getOwnerId());
+        post.setDatePostedAt(existingPost.getDatePostedAt());
+
+        if (post.getBrand() == null) {
+            post.setBrand(existingPost.getBrand());
+        }
+        if (post.getTypeOfClothing() == null) {
+            post.setTypeOfClothing(existingPost.getTypeOfClothing());
+        }
+
+
+        if (postService.editPost(currentUser.get(), post)) {
+            model.addAttribute("post", post);
+            return "redirect:/posts/" + postId;
+        }
+        logger.warn("User not authorized to edit post ID");
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "no access to edit post");
+    }
 
 
 }

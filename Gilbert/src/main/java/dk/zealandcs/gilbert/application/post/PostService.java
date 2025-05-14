@@ -54,6 +54,13 @@ public class PostService implements IPostService {
 
     @Override
     public boolean editPost(User executingUser, Post post) {
+        logger.info("Edit post {}", post);
+        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.Employee)) {
+            postRepository.update(post);
+            logger.info("Edited post {}", post);
+            return true;
+        }
+        logger.warn("Edit post {} is not an employee", executingUser.getUsername());
         return false;
     }
 

@@ -157,7 +157,34 @@ public class PostRepository implements IPostRepository {
     }
 
     public void update(Post post) {
+        String sql = "UPDATE posts SET owner_id = ?, name = ?, description = ?, price = ?, item_condition = ?, " +
+                "size = ?, location = ?, status = ?, image_id = ?, brands_id = ?, product_type_id = ?, date_posted_at = ? " +
+                "WHERE id = ?";
 
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            logger.info("Updating post {}", post);
+
+            stmt.setInt(1, post.getOwnerId());
+            stmt.setString(2, post.getName());
+            stmt.setString(3, post.getDescription());
+            stmt.setDouble(4, post.getPrice());
+            stmt.setString(5, post.getCondition().name());
+            stmt.setString(6, post.getSize());
+            stmt.setString(7, post.getLocation());
+            stmt.setString(8, post.getStatus().name());
+            stmt.setString(9, post.getImageId() != null ? post.getImageId() : "default");
+            stmt.setInt(10, post.getBrand().getId());
+            stmt.setInt(11, post.getTypeOfClothing().getId());
+            stmt.setTimestamp(12, new Timestamp(post.getDatePostedAt().getTime()));
+            stmt.setInt(13, post.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("SQL Exception error updating post {}", post, e);
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(int id) {
