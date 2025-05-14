@@ -49,16 +49,6 @@ public class ProfileController {
         return "forward:/profile/@" + username;
     }
 
-    @GetMapping("/@{username}/info")
-    public String infoPage(@PathVariable String username, HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
-        return "forward:/profile/@" + username;
-    }
-
-    @GetMapping("/@{username}/help")
-    public String helpPage(@PathVariable String username, HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
-        return "forward:/profile/@" + username;
-    }
-
     @GetMapping("/@{username}/pfp")
     public String profilePicture(HttpServletRequest request) {
         var profileUser = (User) request.getAttribute("profileUser");
