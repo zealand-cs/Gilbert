@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="da">
+<body>
+<a th:fragment="post" th:href="@{/posts/{id}(id=${post.id})}" class="post-card">
+    <div class="post-image">
+        <img th:if="${post.getImageId().isPresent()}"
+             th:src="@{/images/{id}(id=${post.imageId})}"
+             alt="Product Image"
+        >
+
+        <svg th:if="${post.getImageId().isEmpty()}" viewBox="0 0 24 24">
+            <use href="#missingIcon"/>
+        </svg>
+    </div>
+
+    <div class="post-info">
+        <h3 class="post-name" th:text="${post.name}">Post Name</h3>
+        <div class="post-details">
+            <span th:text="${post.brand != null ? post.brand.name : 'No Brand'}">Brand</span>
+            <span class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</span>
+        </div>
+        <p class="post-seller">Seller: <span class="seller-name" th:text="${post.ownerDisplayName}">Owner ID</span></p>
+        <div class="post-details">
+            <span th:text="${post.size}">Size</span>
+            <span class="post-condition" th:text="${post.condition}">Condition</span>
+        </div>
+    </div>
+</a>
+</body>
+</html>

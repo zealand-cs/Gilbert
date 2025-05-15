@@ -6,7 +6,7 @@
 <body>
 <section layout:fragment="settings-content">
     <nav class="settings-nav">
-        <a th:href="@{'/profile/@' + ${profileUser.getUsername()}}">
+        <a th:href="@{/profile/me}">
             <svg viewBox="0 0 1024 1024">
                 <use href="#backIcon"/>
             </svg>
@@ -21,6 +21,22 @@
                     <use href="#profileIcon"/>
                 </svg>
                 <span>Account</span>
+            </a>
+        </div>
+
+        <h2>Help</h2>
+        <div class="settings-category-group">
+            <a class="setting-category" href="/info">
+                <svg viewBox="0 0 24 24">
+                    <use href="#logoutIcon"/>
+                </svg>
+                <span>Info</span>
+            </a>
+            <a class="setting-category" href="/help">
+                <svg viewBox="0 0 24 24">
+                    <use href="#logoutIcon"/>
+                </svg>
+                <span>Help</span>
             </a>
         </div>
 

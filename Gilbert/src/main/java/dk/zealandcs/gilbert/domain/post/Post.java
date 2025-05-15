@@ -3,6 +3,7 @@ package dk.zealandcs.gilbert.domain.post;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 public class Post {
 
@@ -130,8 +131,8 @@ public class Post {
         this.status = status;
     }
 
-    public String getImageId() {
-        return imageId;
+    public Optional<String> getImageId() {
+        return Optional.ofNullable(imageId);
     }
 
     public void setImageId(String imageId) {

@@ -13,8 +13,8 @@
         </svg>
     </a>
     <a class="favorites" href="/profile/me/favorites">
-        <svg viewBox="0 0 24 24">
-            <use href="#favoriteIcon" />
+        <svg viewBox="0 0 24 24" >
+            <use href="#favoriteOutlined" />
         </svg>
     </a>
     <a class="notifications" href="/profile/me/notifications">
@@ -23,7 +23,8 @@
         </svg>
     </a>
     <a class="profile" href="/profile/me">
-        <svg viewBox="0 0 24 24">
+        <img th:if="${currentUser != null && currentUser.isPresent() && currentUser.get().getProfilePictureId().isPresent()}" th:src="@{'/profile/@' + ${currentUser.get().getUsername()} + '/pfp'}" alt="profile picture for someone">
+        <svg th:if="${currentUser == null || currentUser.isEmpty() || currentUser.get().getProfilePictureId().isEmpty()}" viewBox="0 0 24 24">
             <use href="#profileIcon" />
         </svg>
     </a>

@@ -1,5 +1,6 @@
 package dk.zealandcs.gilbert.application.user;
 
+import dk.zealandcs.gilbert.domain.post.Post;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.RegisterUser;
 import dk.zealandcs.gilbert.domain.user.UserRole;
@@ -24,4 +25,8 @@ public interface IUserService {
     boolean updateUser(User user);
     boolean updatePassword(User targetUser, String currentPassword, String newPassword);
     boolean updateRole(User executingUser, User targetUser, UserRole role);
+
+    void addFavorite(User user, int post);
+    void removeFavorite(User user, int post);
+    List<Post> getFavorites(User user);
 }

@@ -37,10 +37,6 @@ public class PostController {
         }
 
         post.setOwnerId(currentUser.get().getId());
-
-        if (post.getImageId() == null || post.getImageId().isBlank()) {
-            post.setImageId("default");
-        }
         post.setDatePostedAt(new Date());
 
         var newPost = postService.createPost(post);

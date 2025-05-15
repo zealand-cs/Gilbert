@@ -3,6 +3,8 @@ package dk.zealandcs.gilbert.application.user;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.RegisterUser;
 import dk.zealandcs.gilbert.exceptions.EmailInUseException;
+import dk.zealandcs.gilbert.infrastruture.favorites.IFavoriteRepository;
+import dk.zealandcs.gilbert.infrastruture.post.IPostRepository;
 import dk.zealandcs.gilbert.infrastruture.storage.IStorageRepository;
 import dk.zealandcs.gilbert.infrastruture.user.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,12 +21,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 class UserServiceTest {
     IUserRepository mockRepo;
     IStorageRepository mockStorRepo;
+    IPostRepository mockPostRepo;
+    IFavoriteRepository mockFavoriteRepo;
+
     UserService userService;
 
     @BeforeEach
     public void beforeEach() {
         mockRepo = Mockito.mock(IUserRepository.class);
-        userService = new UserService(mockRepo, mockStorRepo);
+        userService = new UserService(mockRepo, mockStorRepo, mockPostRepo, mockFavoriteRepo);
     }
 
     @Test

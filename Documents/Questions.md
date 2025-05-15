@@ -4,11 +4,15 @@
 
 ### 1.1 Should usernames be unique or allow duplicaes?
 
+> They should be unique. Display names however, can be duplicates.
+
 ## 2. ME/SELL page
 
 ### 2.1 Under the ME/SELL page, what is "Info" and "Help", and what should they show?
 
 ### 2.2 Should there be a public profile page a la ME/SELL page?
+
+> All users have a unique public page.
 
 ## 3. Buying and selling
 
@@ -35,3 +39,12 @@ See question 3.3.
 #### 3.3.1 What if someone bids, but someone else pays full price in the mean time?
 
 This relates to question 3.2 about confirmation.
+
+Admin
+
+- Delete other people
+
+Employee
+
+- Confirm, edit and delete posts
+- Go to helpcenter
