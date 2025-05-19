@@ -13,17 +13,26 @@ class User {
     email
     password
     role
+    termsAcceptedDate
     followers
     following
 }
 
-class SellerPost {
+class Post {
     id
-    seller_id
+    owner_id
     name
     brand
+    typeOfClothing
+    description
+    price
     condition
-    sold
+    size
+    location
+    status
+    imageId
+    datePostedAt
+    ownerDisplayName
 }
 
 class BuyerOrders {
@@ -50,4 +59,14 @@ class Favorite {
     post_id
     added_time
 }
+
+    User "1" --> "*" Post : creates
+    User "1" --> "*" BuyerOrders : places
+    User "1" --> "*" Notification : receives
+    User "1" --> "*" Follower : has
+    User "1" --> "*" Favorite : saves
+
+    Post "*" --> "*" Favorite : is favorited in
+    Post "*" --> "1" User : owner
+    BuyerOrders "*" --> "*" Post : contains
 ```
