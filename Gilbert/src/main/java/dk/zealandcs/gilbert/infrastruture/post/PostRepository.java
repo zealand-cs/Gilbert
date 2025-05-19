@@ -260,6 +260,7 @@ public class PostRepository implements IPostRepository {
                   LEFT JOIN product_types pt ON p.product_type_id = pt.id
                   LEFT JOIN users u ON p.owner_id = u.id
                 GROUP BY (p.id)
+                HAVING relevance > 0
                 ORDER BY relevance DESC
             """;
 

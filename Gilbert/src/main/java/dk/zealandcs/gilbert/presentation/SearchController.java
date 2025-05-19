@@ -22,7 +22,7 @@ public class SearchController {
     public String mainSearchPage(@RequestParam Optional<String[]> category, @RequestParam Optional<String> query, Model model) {
         if (category.isPresent()) {
             var posts = postService.search(null, category.get());
-            model.addAttribute(posts);
+            model.addAttribute("posts", posts);
         }
         if (query.isPresent()) {
             var posts = postService.search(query.get(), null);
