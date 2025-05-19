@@ -5,26 +5,28 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <a class="profile-create" href="/posts/createpost">+</a>
     <div class="profile-column">
         <div class="navigation">
             <nav th:if="${self}">
                 <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/notifications'}">
                     <svg viewBox="0 0 24 24">
-                        <use href="#notificationsIcon" />
+                        <use href="#notificationsIcon"/>
                     </svg>
                 </a>
                 <a th:href="@{'/profile/me/settings'}">
                     <svg viewBox="0 0 24 24">
-                        <use href="#profileIcon" />
+                        <use href="#profileIcon"/>
                     </svg>
                 </a>
             </nav>
         </div>
         <div class="profile-header">
             <div class="profile-picture">
-                <img th:if="${profileUser.getProfilePictureId().isPresent()}" th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
+                <img th:if="${profileUser.getProfilePictureId().isPresent()}"
+                     th:src="@{'/profile/@' + ${profileUser.getUsername()} + '/pfp'}" alt="profile picture for someone">
                 <svg th:if="${profileUser.getProfilePictureId().isEmpty()}" viewBox="0 0 24 24">
-                    <use href="#profileIcon" />
+                    <use href="#profileIcon"/>
                 </svg>
             </div>
             <div class="profile-public-info">
@@ -38,10 +40,14 @@
         <div class="profile-menu">
             <nav>
                 <!-- Annoncer? -->
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/posts'}" th:text="#{profile.menu.postsLabel}"></a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/sales'}" th:text="#{profile.menu.salesLabel}"></a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/orders'}" th:text="#{profile.menu.ordersLabel}"></a>
-                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/favorites'}" th:text="#{profile.menu.favoritesLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/posts'}"
+                   th:text="#{profile.menu.postsLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/sales'}"
+                   th:text="#{profile.menu.salesLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/orders'}"
+                   th:text="#{profile.menu.ordersLabel}"></a>
+                <a th:href="@{'/profile/@' + ${profileUser.getUsername()} + '/favorites'}"
+                   th:text="#{profile.menu.favoritesLabel}"></a>
             </nav>
         </div>
         <div class="profile-page-content">

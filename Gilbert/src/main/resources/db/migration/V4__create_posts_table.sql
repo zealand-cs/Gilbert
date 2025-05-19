@@ -15,7 +15,8 @@ CREATE TABLE posts
     date_posted_at  DATE         NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES users (id),
     FOREIGN KEY (brands_id) REFERENCES brands (id),
-    FOREIGN KEY (product_type_id) REFERENCES product_types (id)
+    FOREIGN KEY (product_type_id) REFERENCES product_types (id),
+    FULLTEXT (name, description)
 );
 
 CREATE TABLE post_assets

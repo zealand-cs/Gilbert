@@ -20,4 +20,6 @@ public interface IPostService{
     List<Brand> getAllBrands();
     List<ProductType> getAllProductTypes();
     Optional<Post> findById(int id);
+
+    List<Post> search(String query, String[] categories);
 }

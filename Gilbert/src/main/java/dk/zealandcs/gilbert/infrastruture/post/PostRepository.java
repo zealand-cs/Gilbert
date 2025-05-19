@@ -180,7 +180,7 @@ public class PostRepository implements IPostRepository {
             stmt.setString(6, post.getSize());
             stmt.setString(7, post.getLocation());
             stmt.setString(8, post.getStatus().name());
-            stmt.setString(9, post.getImageId() != null ? post.getImageId() : "default");
+            stmt.setString(9, post.getImageId().isPresent() ? post.getImageId().get() : null);
             stmt.setInt(10, post.getBrand().getId());
             stmt.setInt(11, post.getTypeOfClothing().getId());
             stmt.setTimestamp(12, new Timestamp(post.getDatePostedAt().getTime()));
@@ -203,9 +203,7 @@ public class PostRepository implements IPostRepository {
         } catch (SQLException e) {
             logger.error("SQL Exception error deleting post {}", id, e);
         }
-
     }
-
 
     public List<Brand> getAllBrands() {
         String sql = "SELECT id, name from brands";
@@ -245,6 +243,46 @@ public class PostRepository implements IPostRepository {
 
         } catch (SQLException e) {
             logger.error("SQL Exception error getting product types", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Post> search(String query, String[] category) {
+        String sql = """
+                SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name,
+                  SUM(
+                    MATCH(p.name, p.description) AGAINST(?) +
+                    MATCH(b.name) AGAINST(?)
+                  ) AS relevance
+                FROM posts p
+                  LEFT JOIN brands b ON p.brands_id = b.id
+                  LEFT JOIN product_types pt ON p.product_type_id = pt.id
+                  LEFT JOIN users u ON p.owner_id = u.id
+                GROUP BY (p.id)
+                ORDER BY relevance DESC
+            """;
+
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            logger.info("Getting posts by query: {}", query);
+
+            for (var i = 0; i < 2; i++) {
+                stmt.setString(i + 1, query);
+            }
+
+            var rs = stmt.executeQuery();
+            var posts = new ArrayList<Post>();
+            while (rs.next()) {
+                var post = postFromResultSet(rs);
+                post.ifPresent(posts::add);
+            }
+
+            logger.info("Found {} posts", posts.size());
+            return posts;
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception error getting posts", e);
             throw new RuntimeException(e);
         }
     }

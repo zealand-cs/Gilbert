@@ -98,4 +98,8 @@ public class PostService implements IPostService {
         return post;
     }
 
+    @Override
+    public List<Post> search(String query, String[] categories) {
+        return postRepository.search(query, categories);
+    }
 }
