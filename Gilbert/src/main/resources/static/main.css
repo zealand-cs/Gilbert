@@ -538,4 +538,99 @@ input {
     & input {
         width: 100%;
     }
+
+
+
+
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.admin-panel {
+    background-color: var(--surface);
+    border-radius: var(--border-radius-m);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background-color: var(--tertiary);
+    padding: 20px;
+    border-radius: var(--border-radius-s);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--text);
+}
+
+.stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: var(--primary);
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--surface);
+}
+
+.users-table th {
+    background-color: var(--surface);
+    color: var(--text);
+    font-weight: bold;
+}
+
+.role-badge {
+    padding: 5px 10px;
+    border-radius: var(--border-radius-s);
+    font-size: 0.9em;
+}
+
+.role-ADMIN { background-color: var(--primary); color: var(--alternate-text); }
+.role-EMPLOYEE { background-color: var(--secondary); color: var(--alternate-text); }
+.role-SELLER { background-color: var(--primary); color: var(--alternate-text); }
+.role-USER { background-color: var(--secondary); color: var(--alternate-text); }
+
+.role-select {
+    padding: 5px;
+    border-radius: var(--border-radius-s);
+    border: 1px solid var(--surface);
+    background-color: var(--tertiary);
+    color: var(--text);
+}
+
+.update-btn {
+    padding: 5px 15px;
+    background-color: var(--primary);
+    color: var(--alternate-text);
+    border: none;
+    border-radius: var(--border-radius-s);
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background-color: var(--secondary);
 }
