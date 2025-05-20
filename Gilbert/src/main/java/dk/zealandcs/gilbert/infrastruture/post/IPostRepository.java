@@ -19,7 +19,7 @@ public interface IPostRepository {
     List<Brand> getAllBrands();
     List<ProductType> getAllProductTypes();
 
-    List<Post> search(String query, String[] category);
+    List<Post> search(String query, String[] users, String[] category);
 
     List<Post> getUserFavorites(int userId);
     default List<Post> getUserFavorites(User user) {

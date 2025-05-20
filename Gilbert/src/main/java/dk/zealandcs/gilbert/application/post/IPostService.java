@@ -21,5 +21,5 @@ public interface IPostService{
     List<ProductType> getAllProductTypes();
     Optional<Post> findById(int id);
 
-    List<Post> search(String query, String[] categories);
+    List<Post> search(String query);
 }

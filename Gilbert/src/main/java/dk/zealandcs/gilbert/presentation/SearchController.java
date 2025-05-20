@@ -19,15 +19,22 @@ public class SearchController {
     }
 
     @GetMapping
-    public String mainSearchPage(@RequestParam Optional<String[]> category, @RequestParam Optional<String> query, Model model) {
-        if (category.isPresent()) {
-            var posts = postService.search(null, category.get());
-            model.addAttribute("posts", posts);
+    public String mainSearchPage(@RequestParam Optional<String> query, @RequestParam Optional<String[]> categories, Model model) {
+        if (query.isEmpty()) {
+            return "search/layout";
         }
-        if (query.isPresent()) {
-            var posts = postService.search(query.get(), null);
-            model.addAttribute("posts", posts);
+
+        StringBuilder queryString = new StringBuilder(query.get());
+
+        if (categories.isPresent()) {
+            for (var category : categories.get()) {
+                queryString.append("$").append(category).append(" ");
+            }
         }
+
+        var posts = postService.search(queryString.toString());
+        model.addAttribute("posts", posts);
+
         return "search/layout";
     }
 }
