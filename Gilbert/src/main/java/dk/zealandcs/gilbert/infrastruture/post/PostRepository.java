@@ -226,7 +226,7 @@ public class PostRepository implements IPostRepository {
     }
 
     public List<ProductType> getAllProductTypes() {
-        String sql = "SELECT id, name FROM product_types";
+        String sql = "SELECT id, name, parent_id FROM product_types ORDER BY order_index, name DESC";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting all product types");
@@ -335,8 +335,8 @@ public class PostRepository implements IPostRepository {
         String sql = """
                 SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
                 FROM posts p
-                LEFT JOIN brands b ON p.brands_id = b.id 
-                LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+                LEFT JOIN brands b ON p.brands_id = b.id
+                LEFT JOIN product_types pt ON p.product_type_id = pt.id
                 LEFT JOIN users u ON p.owner_id = u.id
                 LEFT JOIN user_favorites uf ON p.id = uf.post_id
                 WHERE uf.user_id = ?
@@ -410,11 +410,11 @@ public class PostRepository implements IPostRepository {
     }
 
     private Optional<ProductType> productTypeFromResultSet(ResultSet rs) throws SQLException {
+        var parentId = rs.getInt("parent_id");
         return Optional.of(new ProductType(
                 rs.getString("name"),
-                rs.getInt("id")
+                rs.getInt("id"),
+                parentId == 0 ? null : parentId
         ));
     }
-
-
 }

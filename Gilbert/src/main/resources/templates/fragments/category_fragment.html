@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="da">
+<body>
+<details th:fragment="category">
+    <summary th:text="${category.getValue().getName()}"></summary>
+    <th:block th:each="category : ${categories}">
+        <details th:unless="${categoryTree.getChildrenNodes(category).isEmpty()}" th:include="/fragments/category_fragment :: category" th:with="category=${category}, categories=${categoryTree.getChildrenNodes(category)}, categoryTree=${categoryTree}"></details>
+        <a th:if="${categoryTree.getChildrenNodes(category).isEmpty()}" th:href="@{/search(categories=${category.getId()})}" th:text="${category.getValue().getName()}"></a>
+    </th:block>
+</details>
+</body>
+</html>
