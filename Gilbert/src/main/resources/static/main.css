@@ -421,13 +421,7 @@ input {
 
 @media (max-width: 768px) {
     .posts-grid {
-        gap: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .posts-grid {
-        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 }
 
@@ -471,7 +465,7 @@ input {
 
     & .post-image {
         border-bottom: 1px solid #eee;
-        height: 150px;
+        height: 200px;
 
         img {
             width: 100%;
@@ -531,5 +525,17 @@ input {
     & .seller-name {
         color: #050505;
         font-weight: bold;
+    }
+}
+
+.search-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    padding: 0.5rem;
+
+    & input {
+        width: 100%;
     }
 }
