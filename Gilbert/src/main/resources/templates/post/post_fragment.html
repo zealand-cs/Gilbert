@@ -19,7 +19,6 @@
             <span th:text="${post.brand != null ? post.brand.name : 'No Brand'}">Brand</span>
             <span class="post-price" th:text="${'€' + #numbers.formatDecimal(post.price, 1, 2)}">€0.00</span>
         </div>
-        <p class="post-seller">Seller: <span class="seller-name" th:text="${post.ownerDisplayName}">Owner ID</span></p>
         <div class="post-details">
             <span th:text="${post.size}">Size</span>
             <span class="post-condition" th:text="${post.condition}">Condition</span>

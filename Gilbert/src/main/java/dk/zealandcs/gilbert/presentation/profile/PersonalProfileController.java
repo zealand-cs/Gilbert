@@ -2,10 +2,7 @@ package dk.zealandcs.gilbert.presentation.profile;
 
 import dk.zealandcs.gilbert.application.user.IUserService;
 import dk.zealandcs.gilbert.domain.user.User;
-import dk.zealandcs.gilbert.domain.user.UserRole;
 import dk.zealandcs.gilbert.exceptions.InvalidPasswordFormatException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

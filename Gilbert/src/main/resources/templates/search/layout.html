@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+<body>
+<section class="search-content" layout:fragment="content">
+    <div class="search-header">
+        <h1>Search</h1>
+        <form action="/search" method="get">
+            <label>
+                <input placeholder="Search" type="search" name="query">
+            </label>
+        </form>
+    </div>
+    <div class="container">
+        <div id="search-results" class="posts-grid">
+            <div th:if="${#lists.isEmpty(posts)}" class="no-posts">
+                <p>No items are available at the moment.</p>
+            </div>
+
+            <th:block th:each="post : ${posts}">
+                <div th:replace="~{/post/post_fragment :: post}"></div>
+            </th:block>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -4,18 +4,17 @@ import dk.zealandcs.gilbert.config.DatabaseConfig;
 import dk.zealandcs.gilbert.domain.post.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class PostRepository implements IPostRepository {
     private static final Logger logger = LoggerFactory.getLogger(PostRepository.class);
-
 
     private final DatabaseConfig databaseConfig;
 
@@ -203,9 +202,7 @@ public class PostRepository implements IPostRepository {
         } catch (SQLException e) {
             logger.error("SQL Exception error deleting post {}", id, e);
         }
-
     }
-
 
     public List<Brand> getAllBrands() {
         String sql = "SELECT id, name from brands";
@@ -245,6 +242,90 @@ public class PostRepository implements IPostRepository {
 
         } catch (SQLException e) {
             logger.error("SQL Exception error getting product types", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Post> search(String query, String[] users, String[] categories) {
+        String newSql = """
+                SELECT * FROM
+                (
+                    SELECT
+                        p.*,
+                        b.name AS brand_name,
+                        pt.name AS type_name,
+                        u.display_name AS owner_display_name,
+                        SUM(
+                          MATCH(b.name) AGAINST(?) +
+                          MATCH(p.name, p.description) AGAINST(?)
+                        ) AS relevance
+                    FROM posts p
+                        LEFT JOIN brands b ON p.brands_id = b.id
+                        LEFT JOIN product_types pt ON p.product_type_id = pt.id
+                        LEFT JOIN users u ON p.owner_id = u.id
+                """;
+        String partTwo = """
+                    GROUP BY (p.id)
+                ) AS filtered
+                """;
+        String partThree = """
+                ORDER BY relevance DESC
+                """;
+
+        String sql = newSql;
+        if (categories.length > 0) {
+            String inSql = String.join(",", Collections.nCopies(categories.length, "?"));
+            sql += "WHERE pt.id IN (" +  inSql + ")";
+
+            if (users.length > 0) {
+                sql += " AND ";
+            }
+        }
+        if (users.length > 0) {
+            if (categories.length == 0) {
+                sql += " WHERE ";
+            }
+
+            String inSql = String.join(",", Collections.nCopies(users.length, "?"));
+            sql += "u.username IN (" + inSql + ")";
+        }
+        sql += partTwo;
+        if (!query.isEmpty()) {
+            sql += "WHERE relevance > 0 ";
+        }
+        sql += partThree;
+
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            logger.info("Getting posts by query: {}", query);
+
+            int i = 1;
+            stmt.setString(i, query);
+            i++;
+            stmt.setString(i, query);
+            i++;
+            for (var category : categories) {
+                stmt.setString(i, category);
+                i++;
+            }
+            for (var user : users) {
+                stmt.setString(i, user);
+                i++;
+            }
+
+            var rs = stmt.executeQuery();
+            var posts = new ArrayList<Post>();
+            while (rs.next()) {
+                var post = postFromResultSet(rs);
+                post.ifPresent(posts::add);
+            }
+
+            logger.info("Found {} posts", posts.size());
+            return posts;
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception error getting posts", e);
             throw new RuntimeException(e);
         }
     }

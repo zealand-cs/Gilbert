@@ -39,7 +39,7 @@ button {
     border: none;
     height: 2.5rem;
     color: var(--alternate-text);
-    background-color: var(--secondary);
+    background-color: var(--primary);
 }
 
 input {
@@ -249,7 +249,7 @@ input {
     height: 3rem;
     width: 100%;
 
-    background-color: var(--secondary);
+    background-color: var(--primary);
 
     box-shadow: 0 3px 8px 0 #00000077;
 
@@ -286,6 +286,28 @@ input {
         height: 100%;
         width: 32px;
     }
+}
+
+.profile-create {
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+    color: var(--alternate-text);
+    background-color: var(--primary);
+    border-radius: 500px;
+    height: 4rem;
+    width: 4rem;
+
+    font-size: 2.5rem;
+    box-shadow: 0 5px 6px 0 #00000055;
+
+    z-index: 50;
 }
 
 .settings-column {
@@ -399,13 +421,7 @@ input {
 
 @media (max-width: 768px) {
     .posts-grid {
-        gap: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .posts-grid {
-        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 }
 
@@ -449,7 +465,7 @@ input {
 
     & .post-image {
         border-bottom: 1px solid #eee;
-        height: 150px;
+        height: 200px;
 
         img {
             width: 100%;
@@ -509,5 +525,17 @@ input {
     & .seller-name {
         color: #050505;
         font-weight: bold;
+    }
+}
+
+.search-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    padding: 0.5rem;
+
+    & input {
+        width: 100%;
     }
 }

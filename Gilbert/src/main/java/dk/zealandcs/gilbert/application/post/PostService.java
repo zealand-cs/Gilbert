@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,4 +99,23 @@ public class PostService implements IPostService {
         return post;
     }
 
+    @Override
+    public List<Post> search(String query) {
+        var searchKeywords = query.split(" ");
+        List<String> users = new ArrayList<>();
+        List<String> keywords = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
+
+        for (var keyword : searchKeywords) {
+            if (keyword.startsWith("@")) {
+                users.add(keyword.substring(1));
+            } else if (keyword.startsWith("$")) {
+                categories.add(keyword.substring(1));
+            } else {
+                keywords.add(keyword);
+            }
+        }
+
+        return postRepository.search(String.join(" ", keywords), users.toArray(new String[0]), categories.toArray(new String[0]));
+    }
 }
