@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +73,32 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        String sql = "SELECT id, display_name, username, email, password, profile_picture_id, terms_agreement_date, role FROM users";
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("display_name"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profile_picture_id"),
+                        rs.getDate("terms_agreement_date")
+                );
+                user.setId(rs.getInt("id"));
+                user.setRole(UserRole.valueOf(rs.getString("role").toUpperCase()));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException e) {
+            logger.error("Error while fetching all users: {}", e.getMessage());
+            return List.of();
+        }
+
     }
 
     @Override
@@ -124,7 +150,7 @@ public class UserRepository implements IUserRepository {
                     rs.getDate("terms_agreement_date")
             );
             user.setId(rs.getInt("id"));
-            user.setRole(UserRole.valueOf(rs.getString("role")));
+            user.setRole(UserRole.valueOf(rs.getString("role").toUpperCase()));
             return Optional.of(user);
         } catch (SQLException e) {
             logger.error("Error mapping user from result {}", e.getMessage());

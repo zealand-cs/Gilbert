@@ -27,7 +27,7 @@ public class User {
         this.email = email;
         this.passwordHash = password;
         this.profilePictureId = null;
-        this.role = UserRole.User;
+        this.role = UserRole.USER;
         this.termsAcceptedDate = termsAcceptedDate;
     }
 
@@ -37,7 +37,7 @@ public class User {
         this.email = email;
         this.passwordHash = password;
         this.profilePictureId = profilePictureId;
-        this.role = UserRole.User;
+        this.role = UserRole.USER;
         this.termsAcceptedDate = termsAcceptedDate;
     }
 

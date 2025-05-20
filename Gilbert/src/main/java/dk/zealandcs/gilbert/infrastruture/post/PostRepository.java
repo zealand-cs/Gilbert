@@ -180,7 +180,7 @@ public class PostRepository implements IPostRepository {
             stmt.setString(6, post.getSize());
             stmt.setString(7, post.getLocation());
             stmt.setString(8, post.getStatus().name());
-            stmt.setString(9, post.getImageId() != null ? post.getImageId() : "default");
+            stmt.setString(9, post.getImageId().isPresent() ? post.getImageId().get() : null);
             stmt.setInt(10, post.getBrand().getId());
             stmt.setInt(11, post.getTypeOfClothing().getId());
             stmt.setTimestamp(12, new Timestamp(post.getDatePostedAt().getTime()));

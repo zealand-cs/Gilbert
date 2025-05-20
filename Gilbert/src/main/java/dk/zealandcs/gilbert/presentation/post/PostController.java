@@ -108,7 +108,7 @@ public class PostController {
         }
 
         var currentUser = Optional.ofNullable((User)session.getAttribute("currentUser"));
-        if (currentUser.isPresent() && (currentUser.get().getId() == post.get().getOwnerId() || currentUser.get().getRole().isAtLeast(UserRole.Admin))) {
+        if (currentUser.isPresent() && (currentUser.get().getId() == post.get().getOwnerId() || currentUser.get().getRole().isAtLeast(UserRole.ADMIN))) {
             model.addAttribute("post", post.get());
             logger.info("Editing post ID" + postId);
 

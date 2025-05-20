@@ -1,10 +1,10 @@
 package dk.zealandcs.gilbert.domain.user;
 
 public enum UserRole {
-    User(0),
-    Seller(10),
-    Employee(50),
-    Admin(100);
+    USER(0),
+    SELLER(10),
+    EMPLOYEE(50),
+    ADMIN(100);
 
     private final int rank;
 

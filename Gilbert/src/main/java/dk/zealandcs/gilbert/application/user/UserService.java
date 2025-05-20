@@ -167,8 +167,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean updateRole(User executingUser, User targetUser, UserRole role) {
-        return false;
+    public void updateRole(int userId, UserRole newRole) {
+        logger.info("Updating user {} role to {}", userId, newRole);
+
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            logger.warn("User with ID {} not found", userId);
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+
+        User user = userOptional.get();
+        user.setRole(newRole);
+        userRepository.update(user);
+        logger.info("User role updated successfully");
     }
 
     @Override

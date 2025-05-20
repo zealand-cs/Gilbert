@@ -55,7 +55,7 @@ public class PostService implements IPostService {
     @Override
     public boolean editPost(User executingUser, Post post) {
         logger.info("Edit post {}", post);
-        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.Employee)) {
+        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.EMPLOYEE)) {
             postRepository.update(post);
             logger.info("Edited post {}", post);
             return true;
@@ -67,7 +67,7 @@ public class PostService implements IPostService {
     @Override
     public boolean deletePost(User executingUser, Post post) {
         logger.info("Delete post {}", post);
-        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.Employee)) {
+        if (executingUser.getId() == post.getOwnerId() || executingUser.getRole().isAtLeast(UserRole.EMPLOYEE)) {
             postRepository.delete(post.getId());
             logger.info("Deleted post {}", post);
             return true;
