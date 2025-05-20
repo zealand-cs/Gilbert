@@ -2,9 +2,30 @@
 <html lang="da">
 <body>
 <header th:fragment="header" class="app-header">
-    <a href="/">
-        <img src="/images/gilbert_logo.png" th:alt="#{header.logoAlt}">
-    </a>
+    <input type="checkbox" id="menuToggle" hidden>
+    <label for="menuToggle">
+        <svg viewBox="0 0 24 24">
+            <use href="#burgerMenu" />
+        </svg>
+    </label>
+
+    <nav id="nav-menu">
+        <details>
+            <summary>Men</summary>
+            <a href="/search">Something 1</a>
+            <a href="/search">Something 2</a>
+        </details>
+        <details>
+            <summary>Women</summary>
+            <a href="/search?categories=1">Something 1</a>
+            <a href="/search">Something 2</a>
+            <details>
+                <summary>Tops</summary>
+                <a href="/search">Something 1</a>
+                <a href="/search">Something 2</a>
+            </details>
+        </details>
+    </nav>
 </header>
 </body>
 </html>
