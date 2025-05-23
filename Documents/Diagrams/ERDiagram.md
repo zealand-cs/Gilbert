@@ -54,7 +54,7 @@ post_assets {
 users }o--o{ posts : "favorites"
 users ||--o{ posts : "has"
 
-posts ||--|| brands : "is"
-posts ||--|| product_types : "is"
+posts }o--|| brands : "is"
+posts }o--|| product_types : "is"
 posts ||--o{ post_assets : "has"
 ```
