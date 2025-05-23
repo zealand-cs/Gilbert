@@ -12,15 +12,22 @@ users {
     string username
     string email
     string password
+    string profile_picture_id 
+    string terms_agreement_date
     string role
-    datetime date_of_birth
     datetime created_at
 }
 
-user_connections {
-    int user_id PK
-    int follows PK
-    datetime created_at
+brands {
+    int id PK
+    string name
+}
+
+product_types {
+    int id PK
+    string name
+    int order_index
+    int parent_id
 }
 
 posts {
@@ -29,69 +36,25 @@ posts {
     string name
     string description
     double price
-    string condition
+    string item_condition
     string size
     string location
     string status
     string image_id
     int brands_id FK
     int product_type_id FK
-    LocalDate date_posted_at
+    datetime date_posted_at
 }
 
-orders {
-    int id PK
-    int post_id
-    int buyer_id
-    float price
-    datetime created_at
+post_assets {
+    int post_id FK
+    string asset_id
 }
-
-bids {
-    int id PK
-    int post_id
-    int buyer_id
-    float price
-    datetime created_at
-}
-
-notifications {
-    int id PK
-    int target_user_id
-    string notification_type
-    string image_url
-    string link_to
-    datetime created_at
-}
-
-tags {
-    int id PK
-    string parent_tag
-    string name
-    string tag_type
-}
-
-BRANDS {
-    int id PK
-    string name
-}
-
-CLOTHING_TYPES {
-    int id PK
-    string name
-}
-        
-
-
 
 users }o--o{ posts : "favorites"
-users ||--o{ user_connections : "has"
 users ||--o{ posts : "has"
-users ||--o{ orders : "has"
-users ||--o{ bids : "has"
 
-posts }o--o{ tags : "has"
-
-orders ||--|| posts : "target"
-bids ||--|| posts : "target"
+posts ||--|| brands : "is"
+posts ||--|| product_types : "is"
+posts ||--o{ post_assets : "has"
 ```
