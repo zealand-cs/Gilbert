@@ -47,6 +47,10 @@ public class User {
         this.termsAcceptedDate = new Date(Date.from(Instant.now()).getTime());
     }
 
+    public User() {
+
+    }
+
     public String getEmail() {
         return email;
     }

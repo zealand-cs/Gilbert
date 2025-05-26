@@ -161,3 +161,41 @@ participant DB as Database
         end
     end
 ```
+
+```mermaid
+sequenceDiagram
+title Search Flow
+participant External Source
+participant SC as SearchController
+participant IPS as IPostService
+participant PS as PostService
+participant IPR as IPostRepository
+participant PR as PostRepository
+participant DB as Database
+
+    External Source->>SC: GET /search?query=searchText
+    SC->>SC: Parse search parameters
+    Note over SC: Split query into:<br/>keywords, @users, $categories
+    
+    SC->>IPS: search(query)
+    IPS->>PS: search(query)
+    PS->>IPR: search(keywords, users[], categories[])
+    IPR->>PR: search(keywords, users[], categories[])
+    
+    PR->>DB: SELECT FROM posts<br/>JOIN users<br/>JOIN categories<br/>WHERE matches criteria
+    DB-->>PR: Search results
+    
+    alt No results found
+        PR-->>IPR: Empty List<Post>
+        IPR-->>PS: Empty List<Post>
+        PS-->>IPS: Empty List<Post>
+        IPS-->>SC: Empty List<Post>
+        SC-->>External Source: Show "No results found"
+    else Results found
+        PR-->>IPR: List<Post>
+        IPR-->>PS: List<Post>
+        PS-->>IPS: List<Post>
+        IPS-->>SC: List<Post>
+        SC-->>External Source: Display search results
+    end
+```
