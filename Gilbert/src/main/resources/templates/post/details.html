@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout}">
 <head>
-    <meta charset="UTF-8">
     <title>Post Details</title>
-    <link rel="stylesheet" href="/main.css"/>
     <style>
         .container {
+            position: relative;
+
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .post-details {
+            position: relative;
+
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -194,12 +196,19 @@
             </form>
             </div>
         </div>
-        <button hx-post="/profile/me/favorites/1" hx-swap="none">favorite
 
+        <button th:if="${currentUserFavorites.contains(post)}" class="favorite-button" th:onclick="|fetch('/profile/me/favorites/${post.getId()}/delete', { method: 'POST' })|">
+            <svg viewBox="0 0 24 24" class="filled">
+                <use href="#favoriteIcon" />
+            </svg>
+        </button>
+        <button th:unless="${currentUserFavorites.contains(post)}" class="favorite-button" th:onclick="|fetch('/profile/me/favorites/${post.getId()}', { method: 'POST' })|">
+            <svg viewBox="0 0 24 24" class="outlined">
+                <use href="#favoriteIcon" />
+            </svg>
         </button>
     </div>
 </div>
 </section>
-
 </body>
 </html>

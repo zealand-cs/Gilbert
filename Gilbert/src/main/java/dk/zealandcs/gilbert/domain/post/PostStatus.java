@@ -19,5 +19,4 @@ public enum PostStatus {
     public static PostStatus getDefault() {
         return PendingApproval;
     }
-
 }

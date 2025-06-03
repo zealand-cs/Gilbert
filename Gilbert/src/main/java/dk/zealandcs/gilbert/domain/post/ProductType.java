@@ -1,5 +1,6 @@
 package dk.zealandcs.gilbert.domain.post;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ProductType {
@@ -34,5 +35,19 @@ public class ProductType {
 
     public Optional<Integer> getParentId() {
         return Optional.ofNullable(parentId);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+
+        ProductType productType = (ProductType) object;
+
+        return Objects.equals(name, productType.name) && Objects.equals(id, productType.id) && Objects.equals(parentId, productType.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id, parentId);
     }
 }
