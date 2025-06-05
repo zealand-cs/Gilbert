@@ -1,6 +1,8 @@
 package dk.zealandcs.gilbert.presentation.admin;
 
 
+import dk.zealandcs.gilbert.application.post.IPostService;
+import dk.zealandcs.gilbert.application.post.PostService;
 import dk.zealandcs.gilbert.application.user.IUserService;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.UserRole;
@@ -23,9 +25,11 @@ public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     private final IUserService userService;
+    private final IPostService postService;
 
-    public AdminController(IUserService userService) {
+    public AdminController(IUserService userService, IPostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping("")
@@ -102,5 +106,15 @@ public class AdminController {
 
         return "redirect:/adminpanel";
 
+    }
+
+    @PostMapping("/adminpost/approve")
+    public String approvePost(@RequestParam int postId) {
+        return "redirect:/adminpost";
+    }
+
+    @PostMapping("/adminpost/decline")
+    public String declinePost(@RequestParam int postId) {
+        return "redirect:/adminpost";
     }
 }
