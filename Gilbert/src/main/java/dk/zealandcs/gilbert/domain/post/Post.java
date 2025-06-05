@@ -3,6 +3,7 @@ package dk.zealandcs.gilbert.domain.post;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Post {
@@ -153,6 +154,29 @@ public class Post {
 
     public void setOwnerDisplayName(String ownerDisplayName) {
         this.ownerDisplayName = ownerDisplayName;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        }
+
+        var post = (Post) object;
+
+        return Objects.equals(this.id, post.id) &&
+                Objects.equals(this.ownerId, post.ownerId) &&
+                this.name.equals(post.name) &&
+                this.brand.equals(post.brand) &&
+                this.typeOfClothing.equals(post.typeOfClothing) &&
+                this.description.equals(post.description) &&
+                Double.compare(this.price, post.price) == 0 &&
+                Objects.equals(this.condition, post.condition) &&
+                this.size.equals(post.size) &&
+                this.location.equals(post.location) &&
+                Objects.equals(this.status, post.status) &&
+                Objects.equals(this.datePostedAt, post.datePostedAt) &&
+                this.ownerDisplayName.equals(post.ownerDisplayName);
     }
 }
 

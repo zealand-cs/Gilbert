@@ -33,4 +33,14 @@ public class Brand {
         return name;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        }
+
+        var brand = (Brand) object;
+
+        return this.id.equals(brand.id) && this.name.equals(brand.name);
+    }
 }

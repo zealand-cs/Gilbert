@@ -490,6 +490,32 @@ input {
     }
 }
 
+
+.favorite-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 500px;
+    width: 3rem;
+    height: 3rem;
+    padding: 0.5rem;
+
+    background-color: var(--alternate-text);
+    box-shadow: 0 3px 8px 0 #00000055;
+
+    & svg {
+        height: 100%;
+        width: 100%;
+        color: var(--secondary);
+    }
+}
+
+
 .post-card {
     position: relative;
 
@@ -501,27 +527,10 @@ input {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
-    text-decoration: none;
-    color: var(--text);
 
-    & .favorite-button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 500px;
-        width: 3rem;
-        height: 3rem;
-        padding: 0.5rem;
-
-        & svg {
-            height: 100%;
-            width: 100%;
-        }
+    & a {
+        text-decoration: none;
+        color: var(--text);
     }
 
     &:hover {
