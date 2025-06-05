@@ -3,6 +3,7 @@ package dk.zealandcs.gilbert.application.post;
 
 import dk.zealandcs.gilbert.domain.post.Brand;
 import dk.zealandcs.gilbert.domain.post.Post;
+import dk.zealandcs.gilbert.domain.post.PostStatus;
 import dk.zealandcs.gilbert.domain.post.ProductType;
 import dk.zealandcs.gilbert.domain.user.User;
 import dk.zealandcs.gilbert.domain.user.UserRole;
@@ -118,4 +119,79 @@ public class PostService implements IPostService {
 
         return postRepository.search(String.join(" ", keywords), users.toArray(new String[0]), categories.toArray(new String[0]));
     }
+
+    @Override
+    public List<Post> getPendingPosts() {
+        logger.info("Fetching pending approval posts");
+        return postRepository.findAllByStatus(PostStatus.PendingApproval);
+    }
+
+    @Override
+    public boolean approvePost(int postId, User executingUser) {
+        if (!executingUser.getRole().isAtLeast(UserRole.EMPLOYEE)) {
+            logger.warn("User {} attempted to approve post {} without proper permissions",
+                    executingUser.getUsername(), postId);
+            return false;
+        }
+
+        logger.info("User {} attempting to approve post {}", executingUser.getUsername(), postId);
+
+        try {
+            Optional<Post> postOptional = postRepository.findById(postId);
+            if (postOptional.isEmpty()) {
+                logger.warn("Post {} not found for approval", postId);
+                return false;
+            }
+
+            Post post = postOptional.get();
+            if (post.getStatus() != PostStatus.PendingApproval) {
+                logger.warn("Post {} is not in pending status", postId);
+                return false;
+            }
+
+            post.setStatus(PostStatus.Available);
+            postRepository.update(post);
+
+            logger.info("Post {} approved successfully by {}", postId, executingUser.getUsername());
+            return true;
+        } catch (Exception e) {
+            logger.error("Error approving post {}: {}", postId, e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean declinePost(int postId, User executingUser) {
+        if (!executingUser.getRole().isAtLeast(UserRole.EMPLOYEE)) {
+            logger.warn("User {} attempted to decline post {} without proper permissions",
+                    executingUser.getUsername(), postId);
+            return false;
+        }
+
+        logger.info("User {} attempting to decline post {}", executingUser.getUsername(), postId);
+
+        try {
+            Optional<Post> postOptional = postRepository.findById(postId);
+            if (postOptional.isEmpty()) {
+                logger.warn("Post {} not found for declining", postId);
+                return false;
+            }
+
+            Post post = postOptional.get();
+            if (post.getStatus() != PostStatus.PendingApproval) {
+                logger.warn("Post {} is not in pending status", postId);
+                return false;
+            }
+
+            post.setStatus(PostStatus.Declined);
+            postRepository.update(post);
+
+            logger.info("Post {} declined successfully by {}", postId, executingUser.getUsername());
+            return true;
+        } catch (Exception e) {
+            logger.error("Error declining post {}: {}", postId, e.getMessage());
+            return false;
+        }
+    }
+
 }

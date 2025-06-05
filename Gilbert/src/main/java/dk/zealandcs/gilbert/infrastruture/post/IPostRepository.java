@@ -2,6 +2,7 @@ package dk.zealandcs.gilbert.infrastruture.post;
 
 import dk.zealandcs.gilbert.domain.post.Brand;
 import dk.zealandcs.gilbert.domain.post.Post;
+import dk.zealandcs.gilbert.domain.post.PostStatus;
 import dk.zealandcs.gilbert.domain.post.ProductType;
 import dk.zealandcs.gilbert.domain.user.User;
 
@@ -25,4 +26,7 @@ public interface IPostRepository {
     default List<Post> getUserFavorites(User user) {
         return getUserFavorites(user.getId());
     }
+
+    List<Post> findAllByStatus(PostStatus status);
+    void updateStatus(int postId, PostStatus status);
 }

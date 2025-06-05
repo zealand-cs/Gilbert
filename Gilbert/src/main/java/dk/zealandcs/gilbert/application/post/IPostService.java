@@ -22,4 +22,7 @@ public interface IPostService{
     Optional<Post> findById(int id);
 
     List<Post> search(String query);
+    List<Post> getPendingPosts();
+    boolean approvePost(int postId, User executingUser);
+    boolean declinePost(int postId, User executingUser);
 }

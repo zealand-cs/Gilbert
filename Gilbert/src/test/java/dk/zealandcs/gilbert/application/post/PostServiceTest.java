@@ -157,8 +157,8 @@ class PostServiceTest {
 
         assertFalse(result);
         verify(postRepository, never()).delete(post.getId());
-
     }
+
 
     @Test
     void getAllBrands() {

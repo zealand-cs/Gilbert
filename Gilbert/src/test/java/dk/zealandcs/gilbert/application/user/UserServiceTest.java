@@ -44,6 +44,7 @@ class UserServiceTest {
         assertEquals(registerUser.getEmail(), result.getEmail());
     }
 
+
     @Test
     public void register_throwsEmailAlreadyInUser() {
         var registerUser = new RegisterUser("John", "john@example.com", "pAsSwOrD123", true);

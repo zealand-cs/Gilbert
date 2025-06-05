@@ -22,11 +22,16 @@
             <div class="admin-panel">
                 <div class="settings-group">
                     <div class="header">
-                        <h1>Admin Panel</h1>
-                        <h2>User Management</h2>
+                        <h1>User Management</h1>
+                        <h2>User roles</h2>
+                    </div>
+                    <div class="admin-nav">
+                        <a th:href="@{/adminpanel}" class="nav-btn active">User Management</a>
+                        <a th:href="@{/adminpanel/adminpost}" class="nav-btn">Post Management</a>
                     </div>
 
-            <div class="stats settings-category-group">
+
+                    <div class="stats settings-category-group">
                 <div class="stat-card setting-category">
                     <h3>Total Users</h3>
                     <p th:text="${#lists.size(users)}">0</p>

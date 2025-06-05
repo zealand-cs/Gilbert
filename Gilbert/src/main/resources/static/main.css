@@ -708,3 +708,125 @@ input {
 .update-btn:hover {
     background-color: var(--secondary);
 }
+
+.post-management {
+    background-color: var(--surface);
+    border-radius: var(--border-radius-m);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: var(--border-radius-s);
+    font-size: 0.9em;
+}
+
+.status-PendingApproval {
+    background-color: var(--secondary);
+    color: var(--alternate-text);
+}
+
+.status-Approved {
+    background-color: var(--primary);
+    color: var(--alternate-text);
+}
+
+.status-Declined {
+    background-color: #8B0000;
+    color: var(--alternate-text);
+}
+
+.action-button {
+    padding: 5px 15px;
+    color: var(--alternate-text);
+    border: none;
+    border-radius: var(--border-radius-s);
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.approve-btn {
+    background-color: var(--primary);
+}
+
+.decline-btn {
+    background-color: #8B0000;
+}
+
+.post-image {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: var(--border-radius-s);
+}
+
+.admin-nav {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-nav .nav-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none;
+    color: var(--alternate-text);
+    background-color: var(--secondary);
+    border-radius: var(--border-radius-s);
+    transition: all 0.3s ease;
+}
+
+.admin-nav .nav-btn:hover {
+    opacity: 0.9;
+}
+
+.admin-nav .nav-btn.active {
+    background-color: var(--secondary);
+    color: var(--alternate-text);
+}
+.admin-panel .header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-panel .header h1 {
+    margin-bottom: 10px;
+}
+
+.admin-panel .header h2 {
+    margin: 0;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.users-table .approve-btn,
+.users-table .decline-btn {
+    padding: 5px 15px;
+    font-size: 0.9em;
+    min-width: 80px;
+}
+
+.users-table .approve-btn {
+    background-color: var(--primary);
+}
+
+.users-table .decline-btn {
+    background-color: #8B0000;
+}
+
+.status-badge {
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+}
+
+
+

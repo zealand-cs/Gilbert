@@ -361,6 +361,57 @@ public class PostRepository implements IPostRepository {
         }
     }
 
+    //method to findall posts with a given status (for example pendingapproval)
+    @Override
+    public List<Post> findAllByStatus(PostStatus status) {
+        String sql = """
+                SELECT p.*, b.name as brand_name, pt.name as type_name, u.display_name as owner_display_name
+                FROM posts p
+                LEFT JOIN brands b ON p.brands_id = b.id 
+                LEFT JOIN product_types pt ON p.product_type_id = pt.id 
+                LEFT JOIN users u ON p.owner_id = u.id
+                WHERE p.status = ?
+                """;
+
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status.name());
+            ResultSet rs = stmt.executeQuery();
+            List<Post> posts = new ArrayList<>();
+
+            while (rs.next()) {
+                postFromResultSet(rs).ifPresent(posts::add);
+            }
+
+            logger.info("Found {} posts with status {}", posts.size(), status);
+            return posts;
+        } catch (SQLException e) {
+            logger.error("Error fetching posts by status: {}", e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+
+    // method to update a single poststatus
+    @Override
+    public void updateStatus(int postId, PostStatus status) {
+        String sql = "UPDATE posts SET status = ? WHERE id = ?";
+
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status.name());
+            stmt.setInt(2, postId);
+            stmt.executeUpdate();
+
+            logger.info("Updated status of post {} to {}", postId, status);
+        } catch (SQLException e) {
+            logger.error("Error updating post status: {}", e.getMessage());
+            throw new RuntimeException("Failed to update post status", e);
+        }
+    }
+
 
     /**
      * Creates a Postobject from the given resultset

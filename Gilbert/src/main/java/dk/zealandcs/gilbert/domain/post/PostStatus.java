@@ -4,7 +4,8 @@ public enum PostStatus {
     PendingApproval (0),
     Available       (1),
     Reserved        (2),
-    Sold            (3);
+    Sold            (3),
+    Declined        (4);
 
 
     private final int status;

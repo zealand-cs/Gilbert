@@ -1,10 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Post Management</title>
+
 </head>
 <body>
+<section layout:fragment="content">
+    <header th:replace="~{/fragments/header :: header}"></header>
+    <div class="container">
+        <div class="admin-panel">
+            <div class="settings-group">
+                <div class="header">
+                    <h1>Post Management</h1>
+                    <h2>Pending Posts</h2>
+                </div>
+                <div class="admin-nav">
+                    <a th:href="@{/adminpanel}" class="nav-btn active">User Management</a>
+                    <a th:href="@{/adminpanel/adminpost}" class="nav-btn">Post Management</a>
+                </div>
+
+
+                <div class="table-container setting-group">
+                    <table class="users-table">
+                        <thead>
+                        <tr>
+                            <th>Post ID</th>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Posted By</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="post : ${pendingPosts}">
+                            <td th:text="${post.id}"></td>
+                            <td th:text="${post.name}"></td>
+                            <td th:text="${post.brand?.name}"></td>
+                            <td th:text="${post.typeOfClothing?.name}"></td>
+                            <td th:text="${#numbers.formatDecimal(post.price, 1, 2)} + ' kr'"></td>
+                            <td th:text="${post.ownerDisplayName}"></td>
+                            <td>
+                    <span th:text="${post.status}"
+                          th:class="'status-badge status-' + ${post.status}">
+                    </span>
+                            </td>
+                            <td class="action-buttons">
+                                <div class="button-group">
+                                    <form th:action="@{/adminpanel/adminpost/approve}" method="post" style="display: inline;">
+                                        <input type="hidden" name="postId" th:value="${post.id}" />
+                                        <button type="submit" class="update-btn approve-btn"
+                                        onclick="return confirm('Are you sure you want to approve this post?')">Approve</button>
+                                    </form>
+                                    <form th:action="@{/adminpanel/adminpost/decline}" method="post" style="display: inline;">
+                                        <input type="hidden" name="postId" th:value="${post.id}" />
+                                        <button type="submit" class="update-btn decline-btn"
+                                        onclick="return confirm('Are you sure you want to decline this post?')">Decline</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div th:if="${#lists.isEmpty(pendingPosts)}" class="no-posts-message">
+                    <p>No pending posts to review.</p>
+                </div>
+
+                <div th:unless="${session.currentUser != null && session.currentUser.role.isAtLeast(T(dk.zealandcs.gilbert.domain.user.UserRole).EMPLOYEE)}">
+                    <h2>Access Denied</h2>
+                    <p>You don't have permission to access this page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer th:replace="~{/fragments/footer :: footer}"></footer>
+</section>
 
 </body>
 </html>
