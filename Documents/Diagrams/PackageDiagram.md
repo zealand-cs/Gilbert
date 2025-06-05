@@ -9,18 +9,41 @@ graph TD
 
     subgraph presentation [Presentation Layer]
         Controllers
+        UserController
+        PostController
+        AuthController
+        SearchController
+        ProfileController
+        HomeController
     end
 
     subgraph application [Application Layer]
         Services
+        UserService
+        PostService
+        IPostService
+        IUserService
     end
 
     subgraph domain [Domain Layer]
         Entities
+        Post
+        User
+        RegisterUser
+        Brand
+        Condition
+        PostStatus
+        ProductType
     end
 
     subgraph infrastructure [Infrastructure Layer]
         Repositories
+        IUserRepository
+        UserRepository
+        IPostRepository
+        PostRepository
+        IFavoriteRepository
+        FavoriteRepository
         MySQL
     end
 +
@@ -31,7 +54,6 @@ graph TD
   Services --> Entities
   Services --> Repositories
   Repositories --> Entities
-  Repositories --> MySQL
 ```
 
 ## 🧠 Lag-forklaring
