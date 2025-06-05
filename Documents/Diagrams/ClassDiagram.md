@@ -231,36 +231,36 @@ class PostStatus {
 
 ```
 
-```mermaid 
+```mermaid
 classDiagram
 direction BT
 class AdminController {
-  + updateUserRole(int, UserRole, HttpSession) String
   + getUsersPage(HttpSession, Model) String
+  + updateUserRole(int, UserRole, HttpSession) String
   + getAdminPanel(HttpSession, Model) String
 }
 class AuthController {
-  + authPage(Optional~String~, Model) String
-  + registerRequest(RegisterUser, Optional~String~, HttpSession, Model) String
   + loginRequest(String, String, Optional~String~, HttpSession, Model) String
+  + registerRequest(RegisterUser, Optional~String~, HttpSession, Model) String
   + logout(HttpSession) String
+  + authPage(Optional~String~, Model) String
   + authPageRedirect(String, Optional~String~, Model) String
 }
 class AuthFilter {
   + doFilter(ServletRequest, ServletResponse, FilterChain) void
 }
 class Brand {
-  - String name
   - Integer id
+  - String name
   + toString() String
    String name
    Integer id
 }
 class Condition {
 <<enumeration>>
+  + isAtLeast(Condition) boolean
   + values() Condition[]
   + valueOf(String) Condition
-  + isAtLeast(Condition) boolean
 }
 class DatabaseConfig {
    Connection connection
@@ -269,11 +269,11 @@ class DisplayNameValidator {
   + isValid(String) boolean
 }
 class DisplayNameValidatorTest {
-  + isValid_maxLength() void
+  + isValid_tooLong() void
   + isValid_validDisplayName() void
   + isValid_tooShort() void
+  + isValid_maxLength() void
   + isValid_minLength() void
-  + isValid_tooLong() void
 }
 class EmailInUseException
 class EmailNotFoundException
@@ -281,16 +281,16 @@ class EmailValidator {
   + isValid(String) boolean
 }
 class EmailValidatorTest {
+  + isValid_missingAt() void
   + isValid_edgeCaseMail() void
   + isValid_zeroDotThrows() void
-  + isValid_missingAt() void
   + isValid_validEmail() void
   + isValid_multipleAtSeperators() void
 }
 class FavoriteRepository {
-  + getNumberOfFavoritesByPost(int) int
   + remove(int, int) void
   + insert(int, int) void
+  + getNumberOfFavoritesByPost(int) int
 }
 class FilterConfig {
   + authenticateFilter() FilterRegistrationBean~AuthFilter~
@@ -309,87 +309,87 @@ class GilbertApplicationTests {
   ~ contextLoads() void
 }
 class GlobalControllerAdvice {
-  + getCurrentUser(HttpSession) Optional~User~
   + categoryTree() Tree
+  + getCurrentUser(HttpSession) Optional~User~
 }
 class HomeController {
   + home() String
 }
 class IFavoriteRepository {
 <<Interface>>
-  + remove(int, int) void
-  + remove(User, Post) void
   + insert(int, int) void
   + remove(User, int) void
-  + remove(int, Post) void
+  + getNumberOfFavoritesByPost(Post) int
   + insert(int, Post) void
   + getNumberOfFavoritesByPost(int) int
-  + getNumberOfFavoritesByPost(Post) int
   + insert(User, Post) void
   + insert(User, int) void
+  + remove(int, Post) void
+  + remove(User, Post) void
+  + remove(int, int) void
 }
 class IPostRepository {
 <<Interface>>
-  + findById(int) Optional~Post~
-  + findAll() List~Post~
-  + write(Post) Post
-  + update(Post) void
-  + delete(int) void
-  + getUserFavorites(User) List~Post~
-  + getUserFavorites(int) List~Post~
   + search(String, String[], String[]) List~Post~
+  + write(Post) Post
+  + getUserFavorites(User) List~Post~
   + findByOwnerId(int) List~Post~
+  + findAll() List~Post~
+  + update(Post) void
+  + findById(int) Optional~Post~
+  + delete(int) void
+  + getUserFavorites(int) List~Post~
    List~ProductType~ allProductTypes
    List~Brand~ allBrands
 }
 class IPostService {
 <<Interface>>
-  + getPost(int) Optional~Post~
-  + search(String) List~Post~
-  + deletePost(User, Post) boolean
-  + findById(int) Optional~Post~
-  + editPost(User, Post) boolean
   + allPosts() List~Post~
-  + getPostsByOwner(int) List~Post~
+  + findById(int) Optional~Post~
   + createPost(Post) Optional~Post~
+  + getPost(int) Optional~Post~
+  + editPost(User, Post) boolean
+  + deletePost(User, Post) boolean
+  + getPostsByOwner(int) List~Post~
+  + search(String) List~Post~
    List~ProductType~ allProductTypes
    List~Brand~ allBrands
 }
 class IStorageRepository {
 <<Interface>>
   + store(InputStream) String
-  + store(String, InputStream) void
   + objectUrl(String) String
+  + store(String, InputStream) void
   + delete(String) void
 }
 class IUserRepository {
 <<Interface>>
-  + findByEmail(String) Optional~User~
   + findByField(String, String) Optional~User~
-  + findAll() List~User~
-  + update(User) void
-  + write(User) User
+  + findByEmail(String) Optional~User~
   + findByUsername(String) Optional~User~
-  + delete(int) void
+  + update(User) void
   + findById(int) Optional~User~
+  + delete(int) void
+  + write(User) User
+  + findAll() List~User~
 }
 class IUserService {
 <<Interface>>
-  + login(String, String) User
-  + updateRole(int, UserRole) void
-  + removeFavorite(User, int) void
-  + addFavorite(User, int) void
-  + getFavorites(User) List~Post~
-  + getUserByEmail(String) Optional~User~
-  + getUser(int) Optional~User~
-  + allUsers() List~User~
+  + register(RegisterUser) User
   + getUserByUsername(String) Optional~User~
   + updateUser(User) boolean
   + updatePassword(User, String, String) boolean
-  + getProfilePictureUrl(String) String
-  + updateProfilePicture(User, MultipartFile) boolean
-  + register(RegisterUser) User
+  + updateRole(int, UserRole) void
+  + removeFavorite(User, int) void
   + deleteUser(User) boolean
+  + getProfilePictureUrl(String) String
+  + allUsers() List~User~
+  + login(String, String) User
+  + getFavorites(User) List~Post~
+  + getUser(int) Optional~User~
+  + getUserByEmail(String) Optional~User~
+  + updateProfilePicture(User, MultipartFile) boolean
+  + addFavorite(User, int) void
 }
 class IdAccessorFunction~T~ {
 <<Interface>>
@@ -404,9 +404,9 @@ class LoggedInFilter {
   # shouldNotFilter(HttpServletRequest) boolean
 }
 class MinioS3Client {
+  + objectUrl(String) String
   + delete(String) void
   + store(String, InputStream) void
-  + objectUrl(String) String
 }
 class ParentIdAccessorFunction~T~ {
 <<Interface>>
@@ -414,48 +414,48 @@ class ParentIdAccessorFunction~T~ {
 }
 class PasswordError {
 <<enumeration>>
-  + valueOf(String) PasswordError
   + values() PasswordError[]
+  + valueOf(String) PasswordError
 }
 class PasswordValidator {
   + isValid(String) boolean
 }
 class PasswordValidatorTest {
-  + isValid_missingLowerCase() void
   + isValid_tooShort() void
-  + isValid_validPassword() void
+  + isValid_allErrors() void
   + isValid_missingUpperCase() void
   + isValid_minimumViable() void
+  + isValid_missingLowerCase() void
+  + isValid_validPassword() void
   + isValid_missingNumber() void
-  + isValid_allErrors() void
 }
 class PersonalProfileController {
-  + deleteAccountSetting(HttpSession) String
-  + deleteFavorite(int, HttpSession) String
+  + profilePage(HttpSession, Model) String
   + accountSettingsPage(HttpSession, Model) String
   + addFavorite(int, HttpSession) String
-  + updateProfilePicture(MultipartFile, HttpSession) String
-  + settingsPage(HttpSession, Model) String
-  + profilePage(HttpSession, Model) String
   + updateDetails(String, String, HttpSession) String
   + favorite(HttpSession, Model) String
+  + settingsPage(HttpSession, Model) String
+  + updateProfilePicture(MultipartFile, HttpSession) String
   + updatePasswordSetting(String, String, HttpSession) String
+  + deleteFavorite(int, HttpSession) String
+  + deleteAccountSetting(HttpSession) String
 }
 class Post {
-  - Condition condition
-  - int id
-  - ProductType typeOfClothing
-  - double price
-  - String name
   - String imageId
+  - String location
+  - String size
+  - Condition condition
   - String ownerDisplayName
-  - Date datePostedAt
+  - String name
+  - ProductType typeOfClothing
+  - int id
   - int ownerId
   - Brand brand
-  - String location
   - PostStatus status
-  - String size
   - String description
+  - Date datePostedAt
+  - double price
    String description
    String location
    int ownerId
@@ -472,71 +472,71 @@ class Post {
    Condition condition
 }
 class PostController {
-  + deletePost(int, HttpSession, Model) String
-  + createPostPage(HttpSession, Model) String
-  + getPost(int, Model) String
-  + createPost(Post, HttpSession, Model) String
-  + updatePost(int, Post, HttpSession, Model) String
-  + editPostPage(int, HttpSession, Model) String
   + getAllPosts(Model) String
+  + getPost(int, Model) String
+  + deletePost(int, HttpSession, Model) String
+  + updatePost(int, Post, HttpSession, Model) String
+  + createPostPage(HttpSession, Model) String
+  + editPostPage(int, HttpSession, Model) String
+  + createPost(Post, HttpSession, Model) String
 }
 class PostRepository {
-  - productTypeFromResultSet(ResultSet) Optional~ProductType~
-  - brandFromResultSet(ResultSet) Optional~Brand~
-  ~ postFromResultSet(ResultSet) Optional~Post~
-  + findByOwnerId(int) List~Post~
-  + update(Post) void
-  + write(Post) Post
-  + findAll() List~Post~
-  + findById(int) Optional~Post~
   + getUserFavorites(int) List~Post~
+  - productTypeFromResultSet(ResultSet) Optional~ProductType~
+  + update(Post) void
+  - brandFromResultSet(ResultSet) Optional~Brand~
+  + findByOwnerId(int) List~Post~
   + delete(int) void
   + search(String, String[], String[]) List~Post~
+  + write(Post) Post
+  + findById(int) Optional~Post~
+  + findAll() List~Post~
+  ~ postFromResultSet(ResultSet) Optional~Post~
    List~ProductType~ allProductTypes
    List~Brand~ allBrands
 }
 class PostService {
   + getPostsByOwner(int) List~Post~
-  + editPost(User, Post) boolean
-  + createPost(Post) Optional~Post~
   + deletePost(User, Post) boolean
-  + allPosts() List~Post~
   + findById(int) Optional~Post~
+  + createPost(Post) Optional~Post~
+  + allPosts() List~Post~
   + getPost(int) Optional~Post~
+  + editPost(User, Post) boolean
   + search(String) List~Post~
    List~ProductType~ allProductTypes
    List~Brand~ allBrands
 }
 class PostStatus {
 <<enumeration>>
-  + values() PostStatus[]
   + valueOf(String) PostStatus
   + isAtLeast(PostStatus) boolean
+  + values() PostStatus[]
    PostStatus default
 }
 class PostWriteException
 class ProductType {
+  - String name
   - Integer id
   - Integer parentId
-  - String name
    String name
    Integer id
    Optional~Integer~ parentId
 }
 class ProfileController {
-  + favoritesPage(String, HttpServletRequest, HttpSession, Model) String
+  + ordersPage(String, HttpServletResponse, HttpServletRequest, HttpSession, Model) String
   + profilePicture(HttpServletRequest) String
   + postsPage(String, HttpServletResponse, HttpServletRequest, HttpSession, Model) String
-  + salesPage(String, HttpServletResponse, HttpServletRequest, HttpSession, Model) String
   + profilePage(HttpServletResponse, HttpServletRequest, HttpSession, Model) String
-  + ordersPage(String, HttpServletResponse, HttpServletRequest, HttpSession, Model) String
+  + favoritesPage(String, HttpServletRequest, HttpSession, Model) String
+  + salesPage(String, HttpServletResponse, HttpServletRequest, HttpSession, Model) String
 }
 class ProfileInterceptor {
   + preHandle(HttpServletRequest, HttpServletResponse, Object) boolean
 }
 class RegisterUser {
-  - String password
   - String email
+  - String password
   - String displayName
    String password
    boolean acceptedTerms
@@ -554,17 +554,17 @@ class StorageConfig {
 }
 class ThymeleafConfig {
   + localeResolver() LocaleResolver
-  + layoutDialect() LayoutDialect
-  + messageSource() MessageSource
   + localeChangeInterceptor() LocaleChangeInterceptor
+  + messageSource() MessageSource
+  + layoutDialect() LayoutDialect
 }
 class Tree~T~ {
   - SequencedSet~Integer~ roots
-  - getChildren(T) Set~Integer~
-  - getChildren(Integer) Set~Integer~
   + getNode(Integer) Optional~T~
   + getChildrenNodes(Integer) List~T~
+  - getChildren(T) Set~Integer~
   + getChildrenNodes(T) List~T~
+  - getChildren(Integer) Set~Integer~
    List~T~ roots
 }
 class TreeNode {
@@ -573,18 +573,18 @@ class TreeNode {
    Optional~Integer~ parentId
 }
 class User {
-  - Date termsAcceptedDate
   - String username
-  - int id
-  - String email
   - String displayName
+  - String passwordHash
+  - Date termsAcceptedDate
+  - String email
+  - int id
   - String profilePictureId
   - UserRole role
-  - String passwordHash
-  + hashPassword() void
   + generateUsernameSuffix(int) String
-  + checkPassword(String) boolean
   + generateUsername(String) String
+  + checkPassword(String) boolean
+  + hashPassword() void
    String passwordHash
    String password
    Date termsAcceptedDate
@@ -597,40 +597,40 @@ class User {
 }
 class UserNotFoundException
 class UserRepository {
-  + findAll() List~User~
-  + delete(int) void
-  ~ userFromResultSet(ResultSet) Optional~User~
   + update(User) void
   + write(User) User
   + findByField(String, String) Optional~User~
+  + delete(int) void
+  ~ userFromResultSet(ResultSet) Optional~User~
+  + findAll() List~User~
 }
 class UserRole {
 <<enumeration>>
-  + valueOf(String) UserRole
   + isAtLeast(UserRole) boolean
+  + valueOf(String) UserRole
   + values() UserRole[]
 }
 class UserService {
-  + getProfilePictureUrl(String) String
-  + getFavorites(User) List~Post~
-  + allUsers() List~User~
-  + getUser(int) Optional~User~
   + removeFavorite(User, int) void
-  + addFavorite(User, int) void
-  + login(String, String) User
-  + register(RegisterUser) User
-  + updateProfilePicture(User, MultipartFile) boolean
-  + updateUser(User) boolean
   + getUserByUsername(String) Optional~User~
+  + allUsers() List~User~
+  + addFavorite(User, int) void
+  + updateProfilePicture(User, MultipartFile) boolean
+  + getUser(int) Optional~User~
   + updatePassword(User, String, String) boolean
-  + deleteUser(User) boolean
-  + getUserByEmail(String) Optional~User~
   + updateRole(int, UserRole) void
+  + updateUser(User) boolean
+  + getFavorites(User) List~Post~
+  + register(RegisterUser) User
+  + getProfilePictureUrl(String) String
+  + getUserByEmail(String) Optional~User~
+  + login(String, String) User
+  + deleteUser(User) boolean
 }
 class UserServiceTest {
   + beforeEach() void
-  + register_throwsEmailAlreadyInUser() void
   + register_validUser() void
+  + register_throwsEmailAlreadyInUser() void
 }
 class UserWriteException
 class WebConfig {
@@ -645,6 +645,7 @@ GeneralNode~T~ "1" *--> "idAccessor 1" IdAccessorFunction~T~
 GeneralNode~T~ "1" *--> "parentIdAccessor 1" ParentIdAccessorFunction~T~ 
 GeneralNode~T~  ..>  TreeNode 
 GlobalControllerAdvice "1" *--> "postService 1" IPostService 
+GlobalControllerAdvice  ..>  Tree~T~ : «create»
 InvalidPasswordFormatException "1" *--> "errors *" PasswordError 
 MinioS3Client  ..>  IStorageRepository 
 PersonalProfileController "1" *--> "userService 1" IUserService 
@@ -661,6 +662,7 @@ ProfileController "1" *--> "postService 1" IPostService
 ProfileController "1" *--> "userService 1" IUserService 
 ProfileInterceptor "1" *--> "userService 1" IUserService 
 SearchController "1" *--> "postService 1" IPostService 
+Tree~T~  ..>  GeneralNode~T~ : «create»
 Tree~T~  ..>  TreeNode 
 User "1" *--> "role 1" UserRole 
 UserRepository "1" *--> "databaseConfig 1" DatabaseConfig 
