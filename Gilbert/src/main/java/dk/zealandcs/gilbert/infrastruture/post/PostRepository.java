@@ -268,6 +268,7 @@ public class PostRepository implements IPostRepository {
         String partTwo = """
                     GROUP BY (p.id)
                 ) AS filtered
+                WHERE status = "Available" 
                 """;
         String partThree = """
                 ORDER BY relevance DESC
@@ -292,9 +293,11 @@ public class PostRepository implements IPostRepository {
         }
         sql += partTwo;
         if (!query.isEmpty()) {
-            sql += "WHERE relevance > 0 ";
+            sql += "AND relevance > 0 ";
         }
         sql += partThree;
+
+        logger.debug(sql);
 
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

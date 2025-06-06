@@ -612,14 +612,20 @@ input {
     & input {
         width: 100%;
     }
-
-
-
-
 }
 
+.search-container {
+    max-width: 1200px;
+    padding: 20px;
+}
 
-.container {
+.post-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+    
+.admin-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
