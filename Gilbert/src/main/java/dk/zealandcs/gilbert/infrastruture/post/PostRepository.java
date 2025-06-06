@@ -297,8 +297,6 @@ public class PostRepository implements IPostRepository {
         }
         sql += partThree;
 
-        logger.debug(sql);
-
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting posts by query: {}", query);

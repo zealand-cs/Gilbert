@@ -122,7 +122,6 @@ input {
             display: flex;
             align-items: center;
             height: 4rem;
-            transition: 1s;
             font-size: 1.3rem;
         }
 
@@ -134,7 +133,6 @@ input {
             display: flex;
             align-items: center;
             padding-left: 2rem;
-            transition: 1s;
         }
     }
 
