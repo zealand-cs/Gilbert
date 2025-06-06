@@ -55,9 +55,9 @@ public class PostController {
             logger.warn("Redirecting user to login page");
             return "redirect:/auth?redirect=/posts/createpost";
         }
-
+        model.addAttribute("post", new Post());
         model.addAttribute("brands", postService.getAllBrands());
-        model.addAttribute("types", postService.getAllProductTypes());
+        model.addAttribute("productTypes", postService.getAllProductTypes());
         model.addAttribute("conditions", Condition.values());
         return "post/create";
     }
@@ -66,7 +66,7 @@ public class PostController {
     public String getAllPosts(Model model) {
         List<Post> posts = postService.allPosts();
         model.addAttribute("posts", posts);
-        return "post/all";
+        return "search/layout";
     }
 
     @GetMapping("/{id}")

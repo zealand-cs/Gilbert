@@ -68,8 +68,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h1 style="margin: 0;">Create New Post</h1>
     </div>
+    <form th:action="@{/posts}" th:object="${post}" method="post" enctype="multipart/form-data">
 
-    <form th:action="@{/posts}" method="post">
         <div class="form-group">
             <label for="name">Item Name</label>
             <input type="text" id="name" name="name" required>
@@ -118,12 +118,28 @@
 
 
         <div class="form-group">
-            <label for="typeOfClothing">Type of Clothing</label>
+            <label for="typeOfClothing">Type of Product</label>
             <select id="typeOfClothing" name="typeOfClothing.id" required>
-                <option value="" disabled selected>Choose type</option>
-                <option th:each="type : ${types}"
-                        th:value="${type.id}"
-                        th:text="${type.name}">Clothing Type</option>
+                <option value="">Select a category</option>
+                <th:block th:each="mainCategory : ${productTypes}">
+                    <th:block th:if="${mainCategory.parentId.isEmpty()}">
+                        <optgroup th:label="${mainCategory.name}">
+
+                            <th:block th:each="category : ${productTypes}">
+                                <th:block th:if="${category.parentId.isPresent() && category.parentId.get() == mainCategory.id}">
+
+                                    <th:block th:each="subCategory : ${productTypes}">
+                                        <option th:if="${subCategory.parentId.isPresent() && subCategory.parentId.get() == category.id}"
+                                                th:value="${subCategory.id}"
+                                                th:text="|${category.name} - ${subCategory.name}|">
+                                        </option>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                        </optgroup>
+                    </th:block>
+                </th:block>
+
             </select>
 
         </div>
@@ -136,6 +152,7 @@
         <button type="submit" class="submit-button">Create Post</button>
     </form>
 </div>
+
 <div style="height: 150px;"></div>
 </section>
 </body>

@@ -226,7 +226,7 @@ public class PostRepository implements IPostRepository {
     }
 
     public List<ProductType> getAllProductTypes() {
-        String sql = "SELECT id, name, parent_id FROM product_types ORDER BY order_index, name DESC";
+        String sql = "SELECT id, name, parent_id FROM product_types ORDER BY COALESCE(parent_id, id), order_index";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             logger.info("Getting all product types");
