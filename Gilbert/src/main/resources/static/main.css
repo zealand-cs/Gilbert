@@ -122,7 +122,6 @@ input {
             display: flex;
             align-items: center;
             height: 4rem;
-            transition: 1s;
             font-size: 1.3rem;
         }
 
@@ -134,7 +133,6 @@ input {
             display: flex;
             align-items: center;
             padding-left: 2rem;
-            transition: 1s;
         }
     }
 
@@ -480,14 +478,8 @@ input {
 
 .posts-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-@media (max-width: 768px) {
-    .posts-grid {
-        gap: 0.5rem;
-    }
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-gap: 0.6rem;
 }
 
 
@@ -612,14 +604,15 @@ input {
     & input {
         width: 100%;
     }
-
-
-
-
 }
 
-
-.container {
+.post-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+    
+.admin-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
