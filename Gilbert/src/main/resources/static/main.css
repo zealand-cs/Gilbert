@@ -480,14 +480,8 @@ input {
 
 .posts-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-@media (max-width: 768px) {
-    .posts-grid {
-        gap: 0.5rem;
-    }
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-gap: 0.6rem;
 }
 
 
@@ -612,11 +606,6 @@ input {
     & input {
         width: 100%;
     }
-}
-
-.search-container {
-    max-width: 1200px;
-    padding: 20px;
 }
 
 .post-details-container {

@@ -11,16 +11,14 @@
             </label>
         </form>
     </div>
-    <div class="search-container">
-        <div id="search-results" class="posts-grid">
-            <div th:if="${#lists.isEmpty(posts)}" class="no-posts">
-                <p>No items are available at the moment.</p>
-            </div>
-
-            <th:block th:each="post : ${posts}">
-                <div th:replace="~{/post/post_fragment :: post}"></div>
-            </th:block>
+    <div id="search-results" class="posts-grid">
+        <div th:if="${#lists.isEmpty(posts)}" class="no-posts">
+            <p>No items are available at the moment.</p>
         </div>
+
+        <th:block th:each="post : ${posts}">
+            <div th:replace="~{/post/post_fragment :: post}"></div>
+        </th:block>
     </div>
 </section>
 </body>
